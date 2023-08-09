@@ -24,7 +24,7 @@ abstract class ApiModule {
       ErrorInterceptor errorInterceptor,
       ) =>
       NetworkManager.getApiDioClient(
-        baseUrl: config.baseUrl,
+        baseUrl: config.endpoint,
         interceptors: [
           baseInterceptor,
           logInterceptor,

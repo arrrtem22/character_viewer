@@ -9,6 +9,9 @@
 .history
 .svn/
 migrate_working_dir/
+.mason/
+mason-lock.json
+out/
 
 # IntelliJ related
 *.iml
@@ -31,6 +34,14 @@ migrate_working_dir/
 .pub-cache/
 .pub/
 /build/
+android/app/build/
+*.gen.dart
+*.config.dart
+*.g.dart
+*.freezed.dart
+*.mocks.dart
+.fvm/flutter_sdk
+/coverage
 
 # Symbolication related
 app.*.symbols
@@ -42,4 +53,9 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
-/.fvm/flutter_sdk/
+
+#Fastlane
+/ios/vendor
+/android/vendor
+
+.secret

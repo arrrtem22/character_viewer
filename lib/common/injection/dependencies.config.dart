@@ -7,9 +7,10 @@
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:character_viewer/common/common.dart' as _i13;
 import 'package:character_viewer/common/constant/config.dart' as _i3;
-import 'package:character_viewer/common/injection/api_module.dart' as _i15;
+import 'package:character_viewer/common/injection/api_module.dart' as _i16;
 import 'package:character_viewer/common/injection/third_party_module.dart'
-    as _i16;
+    as _i17;
+import 'package:character_viewer/common/network/api/character_api.dart' as _i15;
 import 'package:character_viewer/common/network/interceptor/base_interceptor.dart'
     as _i12;
 import 'package:character_viewer/common/network/interceptor/error_interceptor.dart'
@@ -76,10 +77,11 @@ extension GetItInjectableX on _i1.GetIt {
           gh<_i13.LoggerInterceptor>(),
           gh<_i13.ErrorInterceptor>(),
         ));
+    gh.factory<_i15.CharacterApi>(() => _i15.CharacterApi(gh<_i14.Dio>()));
     return this;
   }
 }
 
-class _$ApiModule extends _i15.ApiModule {}
+class _$ApiModule extends _i16.ApiModule {}
 
-class _$ThirdPartyModule extends _i16.ThirdPartyModule {}
+class _$ThirdPartyModule extends _i17.ThirdPartyModule {}
