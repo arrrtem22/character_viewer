@@ -1,4 +1,4 @@
-import 'package:character_viewer/common/router/router.dart';
+import 'package:character_viewer/common/common.dart';
 import 'package:go_router/go_router.dart';
 import 'package:injectable/injectable.dart';
 import 'package:logger/logger.dart';
