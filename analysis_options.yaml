@@ -1,0 +1,47 @@
+# The following line activates a set of recommended lints for Flutter apps,
+# packages, and plugins designed to encourage good coding practices.
+include: package:flutter_lints/flutter.yaml
+
+analyzer:
+  exclude:
+    - "**.g.dart"
+    - "**.gr.dart"
+    - "**.gen.dart"
+    - "**.freezed.dart"
+    - "**.config.dart"
+    - "lib/generated/**"
+
+  language:
+    strict-inference: true
+    strict-raw-types: true
+
+  errors:
+    unused_import: warning
+    library_private_types_in_public_api: warning
+    depend_on_referenced_packages: warning
+    inference_failure_on_function_return_type: warning
+
+linter:
+  # The lint rules applied to this project can be customized in the
+  # section below to disable rules from the `package:flutter_lints/flutter.yaml`
+  # included above or to enable additional rules. A list of all available lints
+  # and their documentation is published at
+  # https://dart-lang.github.io/linter/lints/index.html.
+  #
+  # Instead of disabling a lint rule for the entire project in the
+  # section below, it can also be suppressed for a single line of code
+  # or a specific dart file by using the `// ignore: name_of_lint` and
+  # `// ignore_for_file: name_of_lint` syntax on the line or in the file
+  # producing the lint.
+  rules:
+    sort_constructors_first: false
+    public_member_api_docs: false
+    prefer_relative_imports: false
+    prefer_final_fields: true
+    prefer_final_locals: true
+    await_only_futures: true
+    avoid_classes_with_only_static_members: false
+    prefer_single_quotes: true
+    prefer_const_constructors: true
+    avoid_unnecessary_containers: true
+    sort_pub_dependencies: true

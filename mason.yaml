@@ -1,0 +1,7 @@
+bricks:
+  feature:
+    path: .bricks/feature
+  dto:
+    path: .bricks/dto
+  api:
+    path: .bricks/api
