@@ -20,7 +20,7 @@ mixin _$HomeState {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function() success,
+    required TResult Function(Characters characters) success,
     required TResult Function() failure,
   }) =>
       throw _privateConstructorUsedError;
@@ -28,7 +28,7 @@ mixin _$HomeState {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function()? success,
+    TResult? Function(Characters characters)? success,
     TResult? Function()? failure,
   }) =>
       throw _privateConstructorUsedError;
@@ -36,7 +36,7 @@ mixin _$HomeState {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function()? success,
+    TResult Function(Characters characters)? success,
     TResult Function()? failure,
     required TResult orElse(),
   }) =>
@@ -124,7 +124,7 @@ class _$_Initial implements _Initial {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function() success,
+    required TResult Function(Characters characters) success,
     required TResult Function() failure,
   }) {
     return initial();
@@ -135,7 +135,7 @@ class _$_Initial implements _Initial {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function()? success,
+    TResult? Function(Characters characters)? success,
     TResult? Function()? failure,
   }) {
     return initial?.call();
@@ -146,7 +146,7 @@ class _$_Initial implements _Initial {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function()? success,
+    TResult Function(Characters characters)? success,
     TResult Function()? failure,
     required TResult orElse(),
   }) {
@@ -237,7 +237,7 @@ class _$_Loading implements _Loading {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function() success,
+    required TResult Function(Characters characters) success,
     required TResult Function() failure,
   }) {
     return loading();
@@ -248,7 +248,7 @@ class _$_Loading implements _Loading {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function()? success,
+    TResult? Function(Characters characters)? success,
     TResult? Function()? failure,
   }) {
     return loading?.call();
@@ -259,7 +259,7 @@ class _$_Loading implements _Loading {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function()? success,
+    TResult Function(Characters characters)? success,
     TResult Function()? failure,
     required TResult orElse(),
   }) {
@@ -316,6 +316,10 @@ abstract class _$$_SuccessCopyWith<$Res> {
   factory _$$_SuccessCopyWith(
           _$_Success value, $Res Function(_$_Success) then) =
       __$$_SuccessCopyWithImpl<$Res>;
+  @useResult
+  $Res call({Characters characters});
+
+  $CharactersCopyWith<$Res> get characters;
 }
 
 /// @nodoc
@@ -324,36 +328,69 @@ class __$$_SuccessCopyWithImpl<$Res>
     implements _$$_SuccessCopyWith<$Res> {
   __$$_SuccessCopyWithImpl(_$_Success _value, $Res Function(_$_Success) _then)
       : super(_value, _then);
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? characters = null,
+  }) {
+    return _then(_$_Success(
+      characters: null == characters
+          ? _value.characters
+          : characters // ignore: cast_nullable_to_non_nullable
+              as Characters,
+    ));
+  }
+
+  @override
+  @pragma('vm:prefer-inline')
+  $CharactersCopyWith<$Res> get characters {
+    return $CharactersCopyWith<$Res>(_value.characters, (value) {
+      return _then(_value.copyWith(characters: value));
+    });
+  }
 }
 
 /// @nodoc
 
 class _$_Success implements _Success {
-  const _$_Success();
+  const _$_Success({required this.characters});
+
+  @override
+  final Characters characters;
 
   @override
   String toString() {
-    return 'HomeState.success()';
+    return 'HomeState.success(characters: $characters)';
   }
 
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$_Success);
+        (other.runtimeType == runtimeType &&
+            other is _$_Success &&
+            (identical(other.characters, characters) ||
+                other.characters == characters));
   }
 
   @override
-  int get hashCode => runtimeType.hashCode;
+  int get hashCode => Object.hash(runtimeType, characters);
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$_SuccessCopyWith<_$_Success> get copyWith =>
+      __$$_SuccessCopyWithImpl<_$_Success>(this, _$identity);
 
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function() success,
+    required TResult Function(Characters characters) success,
     required TResult Function() failure,
   }) {
-    return success();
+    return success(characters);
   }
 
   @override
@@ -361,10 +398,10 @@ class _$_Success implements _Success {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function()? success,
+    TResult? Function(Characters characters)? success,
     TResult? Function()? failure,
   }) {
-    return success?.call();
+    return success?.call(characters);
   }
 
   @override
@@ -372,12 +409,12 @@ class _$_Success implements _Success {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function()? success,
+    TResult Function(Characters characters)? success,
     TResult Function()? failure,
     required TResult orElse(),
   }) {
     if (success != null) {
-      return success();
+      return success(characters);
     }
     return orElse();
   }
@@ -421,7 +458,12 @@ class _$_Success implements _Success {
 }
 
 abstract class _Success implements HomeState {
-  const factory _Success() = _$_Success;
+  const factory _Success({required final Characters characters}) = _$_Success;
+
+  Characters get characters;
+  @JsonKey(ignore: true)
+  _$$_SuccessCopyWith<_$_Success> get copyWith =>
+      throw _privateConstructorUsedError;
 }
 
 /// @nodoc
@@ -463,7 +505,7 @@ class _$_Failure implements _Failure {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function() success,
+    required TResult Function(Characters characters) success,
     required TResult Function() failure,
   }) {
     return failure();
@@ -474,7 +516,7 @@ class _$_Failure implements _Failure {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function()? success,
+    TResult? Function(Characters characters)? success,
     TResult? Function()? failure,
   }) {
     return failure?.call();
@@ -485,7 +527,7 @@ class _$_Failure implements _Failure {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function()? success,
+    TResult Function(Characters characters)? success,
     TResult Function()? failure,
     required TResult orElse(),
   }) {
