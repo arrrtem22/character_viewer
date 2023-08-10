@@ -10,9 +10,14 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => getIt<HomeCubit>()..fetchCharacters(),
+      create: (context) => getIt<HomeCubit>()..init(),
       child: const Scaffold(
-        body: HomeView(),
+        body: SafeArea(
+          child: Padding(
+            padding: EdgeInsets.only(top: 30.0, left: 20, right: 20),
+            child: HomeView(),
+          ),
+        ),
       ),
     );
   }
@@ -25,15 +30,23 @@ class HomeView extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<HomeCubit, HomeState>(
       builder: (context, HomeState state) {
-        return state.maybeMap(
-          success: (state) => ListView(
-            children: state.characters.relatedTopics
-                .map((character) => _CharacterItem(character: character))
-                .toList(),
-          ),
-          orElse: () => const Center(
-            child: CircularProgressIndicator(),
-          ),
+        return Column(
+          children: [
+            TextField(onChanged: context.read<HomeCubit>().search),
+            state.maybeMap(
+              general: (state) => Expanded(
+                child: ListView(
+                  shrinkWrap: true,
+                  children: state.characters
+                      .map((character) => _CharacterItem(character: character))
+                      .toList(),
+                ),
+              ),
+              orElse: () => const Center(
+                child: CircularProgressIndicator(),
+              ),
+            )
+          ],
         );
       },
     );
