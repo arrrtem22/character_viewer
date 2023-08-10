@@ -2,19 +2,19 @@
 
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-part 'topic.freezed.dart';
-part 'topic.g.dart';
+part 'character.freezed.dart';
+part 'character.g.dart';
 
 @freezed
-class Topic with _$Topic {
+class Character with _$Character {
   // very strange api
-  const factory Topic({
+  const factory Character({
     @JsonKey(name: 'FirstURL', fromJson: _parseTitle) required String title,
     @JsonKey(name: 'Icon', fromJson: _parseIcon) String? iconUrl,
     @JsonKey(name: 'Text') required String description,
-  }) = _Topic;
+  }) = _Character;
 
-  factory Topic.fromJson(Map<String, Object?> json) => _$TopicFromJson(json);
+  factory Character.fromJson(Map<String, Object?> json) => _$CharacterFromJson(json);
 }
 
 String? _parseIcon(dynamic json) => json != null ? json['URL'] : null;

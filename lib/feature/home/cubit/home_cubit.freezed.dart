@@ -16,20 +16,20 @@ final _privateConstructorUsedError = UnsupportedError(
 
 /// @nodoc
 mixin _$HomeState {
-  List<Topic> get characters => throw _privateConstructorUsedError;
+  List<Character> get characters => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(List<Topic> characters) general,
+    required TResult Function(List<Character> characters) general,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(List<Topic> characters)? general,
+    TResult? Function(List<Character> characters)? general,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(List<Topic> characters)? general,
+    TResult Function(List<Character> characters)? general,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -60,7 +60,7 @@ abstract class $HomeStateCopyWith<$Res> {
   factory $HomeStateCopyWith(HomeState value, $Res Function(HomeState) then) =
       _$HomeStateCopyWithImpl<$Res, HomeState>;
   @useResult
-  $Res call({List<Topic> characters});
+  $Res call({List<Character> characters});
 }
 
 /// @nodoc
@@ -82,7 +82,7 @@ class _$HomeStateCopyWithImpl<$Res, $Val extends HomeState>
       characters: null == characters
           ? _value.characters
           : characters // ignore: cast_nullable_to_non_nullable
-              as List<Topic>,
+              as List<Character>,
     ) as $Val);
   }
 }
@@ -94,7 +94,7 @@ abstract class _$$_SuccessCopyWith<$Res> implements $HomeStateCopyWith<$Res> {
       __$$_SuccessCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({List<Topic> characters});
+  $Res call({List<Character> characters});
 }
 
 /// @nodoc
@@ -113,7 +113,7 @@ class __$$_SuccessCopyWithImpl<$Res>
       characters: null == characters
           ? _value._characters
           : characters // ignore: cast_nullable_to_non_nullable
-              as List<Topic>,
+              as List<Character>,
     ));
   }
 }
@@ -121,13 +121,13 @@ class __$$_SuccessCopyWithImpl<$Res>
 /// @nodoc
 
 class _$_Success implements _Success {
-  const _$_Success({final List<Topic> characters = const []})
+  const _$_Success({final List<Character> characters = const []})
       : _characters = characters;
 
-  final List<Topic> _characters;
+  final List<Character> _characters;
   @override
   @JsonKey()
-  List<Topic> get characters {
+  List<Character> get characters {
     if (_characters is EqualUnmodifiableListView) return _characters;
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableListView(_characters);
@@ -160,7 +160,7 @@ class _$_Success implements _Success {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(List<Topic> characters) general,
+    required TResult Function(List<Character> characters) general,
   }) {
     return general(characters);
   }
@@ -168,7 +168,7 @@ class _$_Success implements _Success {
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(List<Topic> characters)? general,
+    TResult? Function(List<Character> characters)? general,
   }) {
     return general?.call(characters);
   }
@@ -176,7 +176,7 @@ class _$_Success implements _Success {
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(List<Topic> characters)? general,
+    TResult Function(List<Character> characters)? general,
     required TResult orElse(),
   }) {
     if (general != null) {
@@ -215,10 +215,10 @@ class _$_Success implements _Success {
 }
 
 abstract class _Success implements HomeState {
-  const factory _Success({final List<Topic> characters}) = _$_Success;
+  const factory _Success({final List<Character> characters}) = _$_Success;
 
   @override
-  List<Topic> get characters;
+  List<Character> get characters;
   @override
   @JsonKey(ignore: true)
   _$$_SuccessCopyWith<_$_Success> get copyWith =>
