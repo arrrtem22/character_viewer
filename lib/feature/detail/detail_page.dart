@@ -9,7 +9,10 @@ class DetailPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(child: DetailView(character: character)),
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 20),
+        child: DetailView(character: character),
+      ),
     );
   }
 }
@@ -21,6 +24,13 @@ class DetailView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Center(child: Text(character.title));
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Text(character.title),
+        Text(character.title),
+        Text(character.description),
+      ],
+    );
   }
 }
