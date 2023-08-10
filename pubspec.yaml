@@ -32,6 +32,7 @@ dependencies:
 dev_dependencies:
   bloc_test: 9.1.1
   build_runner: 2.3.3
+  flutter_flavorizr: 2.1.5
   flutter_gen_runner: 5.1.0+1
   flutter_lints: 2.0.0
   flutter_test:
@@ -45,3 +46,25 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+
+flavorizr:
+  flavors:
+    simpsons:
+      app:
+        name: "Simpsons Character Viewer"
+
+      android:
+        applicationId: "com.sample.simpsonsviewer"
+      ios:
+        bundleId: "com.sample.simpsonsviewer"
+
+    wire:
+      app:
+        name: "The Wire Character Viewer"
+
+      android:
+        applicationId: "com.sample.wireviewer"
+      ios:
+        bundleId: "com.sample.wireviewer"
+      macos:
+        bundleId: "com.sample.wireviewer"
