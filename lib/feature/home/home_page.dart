@@ -56,11 +56,12 @@ class HomeView extends StatelessWidget {
 class _CharacterItem extends StatelessWidget {
   const _CharacterItem({Key? key, required this.character}) : super(key: key);
 
-  final Topic character;
+  final Character character;
 
   @override
   Widget build(BuildContext context) {
     return ListTile(
+      onTap: () => DetailRoute($extra: character).go(context),
       title: Text(character.title),
     );
   }

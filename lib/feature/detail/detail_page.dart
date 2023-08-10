@@ -1,28 +1,26 @@
 import 'package:character_viewer/common/common.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-
-import 'cubit/detail_cubit.dart';
 
 class DetailPage extends StatelessWidget {
-  const DetailPage({super.key});
+  const DetailPage({super.key, required this.character});
+
+  final Character character;
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => getIt<DetailCubit>(),
-      child: const Scaffold(
-        body: DetailView(),
-      ),
+    return Scaffold(
+      body: SafeArea(child: DetailView(character: character)),
     );
   }
 }
 
 class DetailView extends StatelessWidget {
-  const DetailView({super.key});
+  const DetailView({super.key, required this.character});
+
+  final Character character;
 
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return Center(child: Text(character.title));
   }
 }

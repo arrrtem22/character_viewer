@@ -1,2 +1,2 @@
 export 'characters.dart';
-export 'topic.dart';
+export 'character.dart';

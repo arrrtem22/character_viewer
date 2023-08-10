@@ -10,7 +10,7 @@ part 'characters.g.dart';
 class Characters with _$Characters {
   // very strange api
   const factory Characters({
-    @JsonKey(name: 'RelatedTopics') required List<Topic> relatedTopics,
+    @JsonKey(name: 'RelatedTopics') required List<Character> characters,
   }) = _Characters;
 
   factory Characters.fromJson(Map<String, Object?> json) =>
