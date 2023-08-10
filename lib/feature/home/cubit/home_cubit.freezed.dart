@@ -17,19 +17,21 @@ final _privateConstructorUsedError = UnsupportedError(
 /// @nodoc
 mixin _$HomeState {
   List<Character> get characters => throw _privateConstructorUsedError;
+  Character? get selected => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(List<Character> characters) general,
+    required TResult Function(List<Character> characters, Character? selected)
+        general,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(List<Character> characters)? general,
+    TResult? Function(List<Character> characters, Character? selected)? general,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(List<Character> characters)? general,
+    TResult Function(List<Character> characters, Character? selected)? general,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -60,7 +62,9 @@ abstract class $HomeStateCopyWith<$Res> {
   factory $HomeStateCopyWith(HomeState value, $Res Function(HomeState) then) =
       _$HomeStateCopyWithImpl<$Res, HomeState>;
   @useResult
-  $Res call({List<Character> characters});
+  $Res call({List<Character> characters, Character? selected});
+
+  $CharacterCopyWith<$Res>? get selected;
 }
 
 /// @nodoc
@@ -77,13 +81,30 @@ class _$HomeStateCopyWithImpl<$Res, $Val extends HomeState>
   @override
   $Res call({
     Object? characters = null,
+    Object? selected = freezed,
   }) {
     return _then(_value.copyWith(
       characters: null == characters
           ? _value.characters
           : characters // ignore: cast_nullable_to_non_nullable
               as List<Character>,
+      selected: freezed == selected
+          ? _value.selected
+          : selected // ignore: cast_nullable_to_non_nullable
+              as Character?,
     ) as $Val);
+  }
+
+  @override
+  @pragma('vm:prefer-inline')
+  $CharacterCopyWith<$Res>? get selected {
+    if (_value.selected == null) {
+      return null;
+    }
+
+    return $CharacterCopyWith<$Res>(_value.selected!, (value) {
+      return _then(_value.copyWith(selected: value) as $Val);
+    });
   }
 }
 
@@ -94,7 +115,10 @@ abstract class _$$_SuccessCopyWith<$Res> implements $HomeStateCopyWith<$Res> {
       __$$_SuccessCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({List<Character> characters});
+  $Res call({List<Character> characters, Character? selected});
+
+  @override
+  $CharacterCopyWith<$Res>? get selected;
 }
 
 /// @nodoc
@@ -108,12 +132,17 @@ class __$$_SuccessCopyWithImpl<$Res>
   @override
   $Res call({
     Object? characters = null,
+    Object? selected = freezed,
   }) {
     return _then(_$_Success(
       characters: null == characters
           ? _value._characters
           : characters // ignore: cast_nullable_to_non_nullable
               as List<Character>,
+      selected: freezed == selected
+          ? _value.selected
+          : selected // ignore: cast_nullable_to_non_nullable
+              as Character?,
     ));
   }
 }
@@ -121,7 +150,7 @@ class __$$_SuccessCopyWithImpl<$Res>
 /// @nodoc
 
 class _$_Success implements _Success {
-  const _$_Success({final List<Character> characters = const []})
+  const _$_Success({final List<Character> characters = const [], this.selected})
       : _characters = characters;
 
   final List<Character> _characters;
@@ -134,8 +163,11 @@ class _$_Success implements _Success {
   }
 
   @override
+  final Character? selected;
+
+  @override
   String toString() {
-    return 'HomeState.general(characters: $characters)';
+    return 'HomeState.general(characters: $characters, selected: $selected)';
   }
 
   @override
@@ -144,12 +176,14 @@ class _$_Success implements _Success {
         (other.runtimeType == runtimeType &&
             other is _$_Success &&
             const DeepCollectionEquality()
-                .equals(other._characters, _characters));
+                .equals(other._characters, _characters) &&
+            (identical(other.selected, selected) ||
+                other.selected == selected));
   }
 
   @override
   int get hashCode => Object.hash(
-      runtimeType, const DeepCollectionEquality().hash(_characters));
+      runtimeType, const DeepCollectionEquality().hash(_characters), selected);
 
   @JsonKey(ignore: true)
   @override
@@ -160,27 +194,28 @@ class _$_Success implements _Success {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(List<Character> characters) general,
+    required TResult Function(List<Character> characters, Character? selected)
+        general,
   }) {
-    return general(characters);
+    return general(characters, selected);
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(List<Character> characters)? general,
+    TResult? Function(List<Character> characters, Character? selected)? general,
   }) {
-    return general?.call(characters);
+    return general?.call(characters, selected);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(List<Character> characters)? general,
+    TResult Function(List<Character> characters, Character? selected)? general,
     required TResult orElse(),
   }) {
     if (general != null) {
-      return general(characters);
+      return general(characters, selected);
     }
     return orElse();
   }
@@ -215,10 +250,14 @@ class _$_Success implements _Success {
 }
 
 abstract class _Success implements HomeState {
-  const factory _Success({final List<Character> characters}) = _$_Success;
+  const factory _Success(
+      {final List<Character> characters,
+      final Character? selected}) = _$_Success;
 
   @override
   List<Character> get characters;
+  @override
+  Character? get selected;
   @override
   @JsonKey(ignore: true)
   _$$_SuccessCopyWith<_$_Success> get copyWith =>
