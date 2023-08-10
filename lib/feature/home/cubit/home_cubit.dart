@@ -44,4 +44,8 @@ class HomeCubit extends Cubit<HomeState> {
   void search([String text = '']) {
     _searchSubject.add(text.toLowerCase());
   }
+
+  void selectCharacter([Character? character]) {
+    emit(state.copyWith(selected: character));
+  }
 }
