@@ -1,4 +1,4 @@
-import 'package:character_viewer/feature/detail/detail.dart';
+import 'package:character_viewer/common/common.dart';
 import 'package:character_viewer/feature/feature.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -21,8 +21,11 @@ class HomeRoute extends GoRouteData {
 }
 
 class DetailRoute extends GoRouteData {
-  const DetailRoute();
+  DetailRoute({this.$extra});
+
+  final Character? $extra;
 
   @override
-  Widget build(BuildContext context, GoRouterState state) => const DetailPage();
+  Widget build(BuildContext context, GoRouterState state) =>
+      DetailPage(character: $extra!);
 }

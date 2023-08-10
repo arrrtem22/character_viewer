@@ -12,14 +12,14 @@ class {{name.pascalCase()}}Page extends StatelessWidget {
     return BlocProvider(
       create: (context) => getIt<{{name.pascalCase()}}Cubit>(),
       child: const Scaffold(
-        body: {{name.pascalCase()}}View(),
+        body: _{{name.pascalCase()}}View(),
       ),
     );
   }
 }
 
-class {{name.pascalCase()}}View extends StatelessWidget {
-  const {{name.pascalCase()}}View({super.key});
+class _{{name.pascalCase()}}View extends StatelessWidget {
+  const _{{name.pascalCase()}}View({super.key});
 
   @override
   Widget build(BuildContext context) {
