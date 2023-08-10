@@ -15,7 +15,7 @@ class HomePage extends StatelessWidget {
         body: SafeArea(
           child: Padding(
             padding: EdgeInsets.only(top: 30.0, left: 20, right: 20),
-            child: HomeView(),
+            child: _HomeView(),
           ),
         ),
       ),
@@ -23,8 +23,8 @@ class HomePage extends StatelessWidget {
   }
 }
 
-class HomeView extends StatelessWidget {
-  const HomeView({super.key});
+class _HomeView extends StatelessWidget {
+  const _HomeView({super.key});
 
   @override
   Widget build(BuildContext context) {

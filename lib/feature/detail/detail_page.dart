@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:character_viewer/common/common.dart';
 import 'package:flutter/material.dart';
 
@@ -9,10 +10,7 @@ class DetailPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20),
-        child: DetailView(character: character),
-      ),
+      body: DetailView(character: character),
     );
   }
 }
@@ -24,13 +22,22 @@ class DetailView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Text(character.title),
-        Text(character.title),
-        Text(character.description),
-      ],
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          if (character.imageUrl.isNotEmpty)
+            CachedNetworkImage(
+              imageUrl: resolveImageUrl(character.imageUrl),
+              fadeInDuration: const Duration(seconds: 0),
+              fadeOutDuration: const Duration(seconds: 0),
+              placeholder: (_, __) => const Icon(Icons.ac_unit),
+            ),
+          Text(character.title),
+          Text(character.description),
+        ],
+      ),
     );
   }
 }
