@@ -15,7 +15,7 @@ class HomePage extends StatelessWidget {
         body: SafeArea(
           child: Padding(
             padding: EdgeInsets.only(top: 30.0, left: 20, right: 20),
-            child: HomeView(),
+            child: _HomeView(),
           ),
         ),
       ),
@@ -23,8 +23,8 @@ class HomePage extends StatelessWidget {
   }
 }
 
-class HomeView extends StatelessWidget {
-  const HomeView({super.key});
+class _HomeView extends StatelessWidget {
+  const _HomeView({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -56,11 +56,12 @@ class HomeView extends StatelessWidget {
 class _CharacterItem extends StatelessWidget {
   const _CharacterItem({Key? key, required this.character}) : super(key: key);
 
-  final Topic character;
+  final Character character;
 
   @override
   Widget build(BuildContext context) {
     return ListTile(
+      onTap: () => DetailRoute($extra: character).go(context),
       title: Text(character.title),
     );
   }

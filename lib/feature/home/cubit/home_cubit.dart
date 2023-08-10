@@ -7,7 +7,6 @@ import 'package:injectable/injectable.dart';
 import 'package:rxdart/rxdart.dart';
 
 part 'home_cubit.freezed.dart';
-
 part 'home_state.dart';
 
 @injectable
@@ -29,7 +28,7 @@ class HomeCubit extends Cubit<HomeState> {
   }
 
   Future<void> init() async {
-    final characters = (await charactersService.getCharacters()).relatedTopics;
+    final characters = (await charactersService.getCharacters()).characters;
     _subscription = _searchSubject.listen((text) {
       if (text.isEmpty) return;
       final filteredCharacters = characters
