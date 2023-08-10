@@ -4,7 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:logger/logger.dart';
 
 enum FakeApi {
-  character;
+  characters;
 
   bool get isEnabled => FakeApiManager.isFakeApiEnabled(this);
 
@@ -15,7 +15,7 @@ enum FakeApi {
 class FakeApiManager {
   static final _enabledFakeApi = <FakeApi>{
     //Place here fake api that should be enabled by default
-    // if (kDebugMode) FakeApi.character,
+    // if (kDebugMode) FakeApi.characters,
   };
 
   static bool isFakeApiEnabled(FakeApi api) => _enabledFakeApi.contains(api);

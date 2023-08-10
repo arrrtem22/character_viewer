@@ -7,9 +7,9 @@ import 'package:injectable/injectable.dart';
 abstract class ApiModule {
   @Named(DependencyName.cdn)
   Dio cdn(
-      Config config,
-      LoggerInterceptor logInterceptor,
-      ) =>
+    Config config,
+    LoggerInterceptor logInterceptor,
+  ) =>
       NetworkManager.getApiDioClient(
         baseUrl: config.cdnUrl,
         interceptors: [
@@ -18,17 +18,19 @@ abstract class ApiModule {
       );
 
   Dio dio(
-      Config config,
-      BaseInterceptor baseInterceptor,
-      LoggerInterceptor logInterceptor,
-      ErrorInterceptor errorInterceptor,
-      ) =>
+    Config config,
+    BaseInterceptor baseInterceptor,
+    LoggerInterceptor logInterceptor,
+    ErrorInterceptor errorInterceptor,
+    JsonResponseInterceptor jsonResponseInterceptor,
+  ) =>
       NetworkManager.getApiDioClient(
         baseUrl: config.endpoint,
         interceptors: [
           baseInterceptor,
           logInterceptor,
           errorInterceptor,
+          jsonResponseInterceptor,
         ],
       );
 }
