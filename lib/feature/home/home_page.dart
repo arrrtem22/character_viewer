@@ -45,16 +45,19 @@ class _LargeHomeView extends StatelessWidget {
                   TextField(onChanged: context.read<HomeCubit>().search),
                   state.maybeMap(
                     success: (state) => Expanded(
-                      child: ListView(
-                        shrinkWrap: true,
-                        children: state.characters
-                            .map((character) => _CharacterItem(
-                                  character: character,
-                                  onTap: () => context
-                                      .read<HomeCubit>()
-                                      .selectCharacter(character),
-                                ))
-                            .toList(),
+                      child: RefreshIndicator(
+                        onRefresh: context.read<HomeCubit>().refresh,
+                        child: ListView(
+                          shrinkWrap: true,
+                          children: state.characters
+                              .map((character) => _CharacterItem(
+                                    character: character,
+                                    onTap: () => context
+                                        .read<HomeCubit>()
+                                        .selectCharacter(character),
+                                  ))
+                              .toList(),
+                        ),
                       ),
                     ),
                     failure: (state) => Center(
@@ -93,15 +96,18 @@ class _SmallHomeView extends StatelessWidget {
             TextField(onChanged: context.read<HomeCubit>().search),
             state.maybeMap(
               success: (state) => Expanded(
-                child: ListView(
-                  shrinkWrap: true,
-                  children: state.characters
-                      .map((character) => _CharacterItem(
-                            character: character,
-                            onTap: () =>
-                                DetailRoute($extra: character).go(context),
-                          ))
-                      .toList(),
+                child: RefreshIndicator(
+                  onRefresh: context.read<HomeCubit>().refresh,
+                  child: ListView(
+                    shrinkWrap: true,
+                    children: state.characters
+                        .map((character) => _CharacterItem(
+                              character: character,
+                              onTap: () =>
+                                  DetailRoute($extra: character).go(context),
+                            ))
+                        .toList(),
+                  ),
                 ),
               ),
               failure: (state) => Center(

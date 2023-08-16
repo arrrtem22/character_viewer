@@ -15,4 +15,6 @@ class CharactersService {
 
   Stream<Resource<Characters>> getCharactersStream() =>
       _charactersRepository.getCharactersStream();
+
+  Future<void> invalidate() => _charactersRepository.invalidate();
 }

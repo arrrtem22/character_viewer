@@ -87,6 +87,8 @@ class HomeCubit extends Cubit<HomeState> {
   void selectCharacter([Character? character]) {
     emit(state.copyWith(selected: character));
   }
+
+  Future<void> refresh() => charactersService.invalidate();
 }
 
 @visibleForTesting
