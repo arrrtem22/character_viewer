@@ -30,7 +30,7 @@ class HomePage extends StatelessWidget {
 }
 
 class _LargeHomeView extends StatelessWidget {
-  const _LargeHomeView({Key? key}) : super(key: key);
+  const _LargeHomeView();
 
   @override
   Widget build(BuildContext context) {
@@ -44,7 +44,7 @@ class _LargeHomeView extends StatelessWidget {
                 children: [
                   TextField(onChanged: context.read<HomeCubit>().search),
                   state.maybeMap(
-                    general: (state) => Expanded(
+                    success: (state) => Expanded(
                       child: ListView(
                         shrinkWrap: true,
                         children: state.characters
@@ -56,6 +56,11 @@ class _LargeHomeView extends StatelessWidget {
                                 ))
                             .toList(),
                       ),
+                    ),
+                    failure: (state) => Center(
+                      child: Text(state.type == FailureType.networkConnection
+                          ? 'Network error'
+                          : 'Unexpected error'),
                     ),
                     orElse: () => const Center(
                       child: CircularProgressIndicator(),
@@ -77,7 +82,7 @@ class _LargeHomeView extends StatelessWidget {
 }
 
 class _SmallHomeView extends StatelessWidget {
-  const _SmallHomeView({super.key});
+  const _SmallHomeView();
 
   @override
   Widget build(BuildContext context) {
@@ -87,7 +92,7 @@ class _SmallHomeView extends StatelessWidget {
           children: [
             TextField(onChanged: context.read<HomeCubit>().search),
             state.maybeMap(
-              general: (state) => Expanded(
+              success: (state) => Expanded(
                 child: ListView(
                   shrinkWrap: true,
                   children: state.characters
@@ -98,6 +103,11 @@ class _SmallHomeView extends StatelessWidget {
                           ))
                       .toList(),
                 ),
+              ),
+              failure: (state) => Center(
+                child: Text(state.type == FailureType.networkConnection
+                    ? 'Network error'
+                    : 'Unexpected error'),
               ),
               orElse: () => const Center(
                 child: CircularProgressIndicator(),

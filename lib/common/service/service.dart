@@ -1,2 +1,2 @@
-export 'character_service.dart';
+export 'characters_service.dart';
 export 'device_info.dart';

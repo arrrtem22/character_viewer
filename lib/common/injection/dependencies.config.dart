@@ -7,9 +7,9 @@
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:character_viewer/common/common.dart' as _i11;
 import 'package:character_viewer/common/constant/config.dart' as _i3;
-import 'package:character_viewer/common/injection/api_module.dart' as _i17;
+import 'package:character_viewer/common/injection/api_module.dart' as _i18;
 import 'package:character_viewer/common/injection/third_party_module.dart'
-    as _i18;
+    as _i19;
 import 'package:character_viewer/common/network/api/characters_api.dart'
     as _i14;
 import 'package:character_viewer/common/network/interceptor/base_interceptor.dart'
@@ -20,9 +20,12 @@ import 'package:character_viewer/common/network/interceptor/json_response_interc
     as _i7;
 import 'package:character_viewer/common/network/interceptor/logger_interceptor.dart'
     as _i9;
-import 'package:character_viewer/common/service/character_service.dart' as _i15;
+import 'package:character_viewer/common/repository/characters_repository.dart'
+    as _i15;
+import 'package:character_viewer/common/service/characters_service.dart'
+    as _i16;
 import 'package:character_viewer/common/service/device_info.dart' as _i4;
-import 'package:character_viewer/feature/home/cubit/home_cubit.dart' as _i16;
+import 'package:character_viewer/feature/home/cubit/home_cubit.dart' as _i17;
 import 'package:dio/dio.dart' as _i12;
 import 'package:get_it/get_it.dart' as _i1;
 import 'package:go_router/go_router.dart' as _i5;
@@ -84,14 +87,16 @@ extension GetItInjectableX on _i1.GetIt {
           gh<_i11.JsonResponseInterceptor>(),
         ));
     gh.factory<_i14.CharactersApi>(() => _i14.CharactersApi(gh<_i12.Dio>()));
-    gh.factory<_i15.CharactersService>(
-        () => _i15.CharactersService(charactersApi: gh<_i11.CharactersApi>()));
-    gh.factory<_i16.HomeCubit>(
-        () => _i16.HomeCubit(charactersService: gh<_i11.CharactersService>()));
+    gh.singleton<_i15.CharactersRepository>(
+        _i15.CharactersRepository(gh<_i11.CharactersApi>()));
+    gh.factory<_i16.CharactersService>(() => _i16.CharactersService(
+        charactersRepository: gh<_i11.CharactersRepository>()));
+    gh.factory<_i17.HomeCubit>(
+        () => _i17.HomeCubit(charactersService: gh<_i11.CharactersService>()));
     return this;
   }
 }
 
-class _$ApiModule extends _i17.ApiModule {}
+class _$ApiModule extends _i18.ApiModule {}
 
-class _$ThirdPartyModule extends _i18.ThirdPartyModule {}
+class _$ThirdPartyModule extends _i19.ThirdPartyModule {}
