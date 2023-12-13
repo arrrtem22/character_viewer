@@ -1,10 +1,10 @@
+import 'package:character_viewer/feature/add_character_page/cubit/character_cubit.dart';
 import 'package:character_viewer/feature/add_character_page/cubit/character_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'cubit/character_cubit.dart';
 
 class AddCharacterPage extends StatelessWidget {
-  const AddCharacterPage({super.key});
+  const AddCharacterPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +23,7 @@ class AddCharacterPage extends StatelessWidget {
 class AddCharacterForm extends StatelessWidget {
   final TextEditingController _nameController = TextEditingController();
 
-  AddCharacterForm({super.key});
+  AddCharacterForm({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -59,7 +59,7 @@ class AddCharacterForm extends StatelessWidget {
         children: [
           TextField(
             controller: _nameController,
-            decoration: const InputDecoration(labelText: 'Charter Name'),
+            decoration: const InputDecoration(labelText: 'Character Name'),
           ),
           const SizedBox(height: 20),
           ElevatedButton(
@@ -76,7 +76,7 @@ class AddCharacterForm extends StatelessWidget {
                 );
               }
             },
-            child: const Text('Add Charter'),
+            child: const Text('Add Character'),
           ),
         ],
       ),
