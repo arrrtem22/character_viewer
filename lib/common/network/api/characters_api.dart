@@ -15,19 +15,21 @@ abstract class CharactersApi {
   @GET('')
   Future<Characters> getCharacters();
 
-  void addCharacter(String characterName) {}
+  @POST(
+      'addCharacter') // Предполагается, что у вас есть конечная точка для добавления персонажей
+  Future<void> addCharacter(@Body() String characterName);
 }
 
 class FakeCharactersApi implements CharactersApi {
   @override
   Future<Characters> getCharacters() {
-    // TODO: implement ping
+    // TODO: реализовать метод getCharacters
     throw UnimplementedError();
   }
 
   @override
-  void addCharacter(String characterName) {
-    // TODO: implement addCharacter
+  Future<void> addCharacter(String characterName) {
+    // TODO: реализовать метод addCharacter
     throw UnimplementedError();
   }
 }

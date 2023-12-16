@@ -33,6 +33,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.3.3"
+  animations:
+    dependency: transitive
+    description:
+      name: animations
+      sha256: "708e4b68c23228c264b038fe7003a2f5d01ce85fc64d8cae090e86b27fcea6c5"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.0.10"
   archive:
     dependency: transitive
     description:
@@ -57,6 +65,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.11.0"
+  badges:
+    dependency: transitive
+    description:
+      name: badges
+      sha256: "727580d938b7a1ff47ea42df730d581415606b4224cfa708671c10287f8d3fe6"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.0.3"
   bloc:
     dependency: transitive
     description:
@@ -447,6 +463,14 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  foundation_flutter:
+    dependency: "direct main"
+    description:
+      name: foundation_flutter
+      sha256: "15bd30a69ac28618702c11d15b0109efe64a84b3465abc1b9eaab39d359d4ebf"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.2.0"
   freezed:
     dependency: "direct dev"
     description:
@@ -1205,5 +1229,5 @@ packages:
     source: hosted
     version: "3.1.2"
 sdks:
-  dart: ">=3.2.0-194.0.dev <4.0.0"
-  flutter: ">=3.10.0"
+  dart: ">=3.2.0 <4.0.0"
+  flutter: ">=3.16.0"
