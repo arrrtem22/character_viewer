@@ -1,14 +1,14 @@
-import 'package:collection/collection.dart';
+import 'package:flutter/foundation.dart';
 
 class Resource<T> {
   Resource._(this.state,
-      {this.data, required this.message, this.error, this.stackTrace});
+      {this.data, this.message, this.error, this.stackTrace});
 
   factory Resource.loading([T? data]) =>
-      Resource._(ResourceState.loading, data: data, message: '');
+      Resource._(ResourceState.loading, data: data);
 
   factory Resource.success([T? data]) =>
-      Resource._(ResourceState.success, data: data, message: '');
+      Resource._(ResourceState.success, data: data);
 
   factory Resource.error(String message,
           {dynamic error, StackTrace? stackTrace, T? data}) =>
@@ -17,7 +17,7 @@ class Resource<T> {
 
   final ResourceState state;
   final T? data;
-  final String message;
+  final String? message;
   final dynamic error;
   final StackTrace? stackTrace;
 
@@ -49,23 +49,18 @@ class Resource<T> {
           state == other.state &&
           _compareData(data, other.data) &&
           message == other.message &&
-          error == other.error &&
-          stackTrace == other.stackTrace;
+          error == other.error;
 
   bool _compareData(dynamic v1, dynamic v2) =>
-      v1 is List && v2 is List ? ListEquality().equals(v1, v2) : v1 == v2;
+      v1 is List && v2 is List ? listEquals(v1, v2) : v1 == v2;
 
   @override
   int get hashCode =>
-      state.hashCode ^
-      data.hashCode ^
-      message.hashCode ^
-      error.hashCode ^
-      stackTrace.hashCode;
+      state.hashCode ^ data.hashCode ^ message.hashCode ^ error.hashCode;
 
   @override
   String toString() {
-    return 'Resource(state: $state, msg: $message, data: $data)';
+    return 'Resource(state: $state, msg: $message, data : $data)';
   }
 }
 

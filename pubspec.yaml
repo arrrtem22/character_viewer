@@ -9,7 +9,7 @@ environment:
 dependencies:
   adaptive_layout: 0.1.7
   android_id: 0.3.3
-  cached_network_image: 3.3.0
+  cached_network_image: 3.2.3
   cached_repository:
     path: ./package/cached_repository
   cupertino_icons: 1.0.2
@@ -18,7 +18,6 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_bloc: 8.1.3
-  foundation_flutter: ^0.2.0
   freezed_annotation: 2.2.0
   get_it: 7.2.0
   go_router: 6.0.0
@@ -31,7 +30,7 @@ dependencies:
   uuid: 3.0.7
 
 dev_dependencies:
-  bloc_test: ^9.1.5
+  bloc_test: 9.1.1
   build_runner: 2.3.3
   flutter_flavorizr: 2.1.5
   flutter_gen_runner: 5.1.0+1
