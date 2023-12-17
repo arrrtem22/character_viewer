@@ -1,5 +1,6 @@
 import 'package:adaptive_layout/adaptive_layout.dart';
 import 'package:character_viewer/common/common.dart';
+import 'package:character_viewer/feature/add_character_page/add_character.dart';
 import 'package:character_viewer/feature/detail/detail.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -69,6 +70,17 @@ class _LargeHomeView extends StatelessWidget {
                 child: state.selected != null
                     ? DetailView(character: state.selected!)
                     : const Center(child: Text('Select character'))),
+            FloatingActionButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const AddCharacterPage(),
+                  ),
+                );
+              },
+              child: const Icon(Icons.add),
+            ),
           ],
         );
       },
@@ -77,38 +89,73 @@ class _LargeHomeView extends StatelessWidget {
 }
 
 class _SmallHomeView extends StatelessWidget {
-  const _SmallHomeView({super.key});
+  const _SmallHomeView();
 
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<HomeCubit, HomeState>(
       builder: (context, HomeState state) {
-        return Column(
+        return Stack(
           children: [
-            TextField(onChanged: context.read<HomeCubit>().search),
-            state.maybeMap(
-              general: (state) => Expanded(
-                child: ListView(
-                  shrinkWrap: true,
-                  children: state.characters
-                      .map((character) => _CharacterItem(
-                            character: character,
-                            onTap: () =>
-                                DetailRoute($extra: character).go(context),
-                          ))
-                      .toList(),
+            Column(
+              children: [
+                TextField(onChanged: context.read<HomeCubit>().search),
+                state.maybeMap(
+                  general: (state) => Expanded(
+                    child: ListView(
+                      shrinkWrap: true,
+                      children: state.characters
+                          .map((character) => _CharacterItem(
+                                character: character,
+                                onTap: () =>
+                                    DetailRoute($extra: character).go(context),
+                              ))
+                          .toList(),
+                    ),
+                  ),
+                  orElse: () => const Center(
+                    child: CircularProgressIndicator(),
+                  ),
                 ),
+              ],
+            ),
+            Positioned(
+              bottom: 16.0,
+              right: 16.0,
+              child: FloatingActionButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const AddCharacterPage(),
+                    ),
+                  );
+                },
+                child: const Icon(Icons.add),
               ),
-              orElse: () => const Center(
-                child: CircularProgressIndicator(),
-              ),
-            )
+            ),
           ],
         );
       },
     );
   }
 }
+
+// class _CharacterItem extends StatelessWidget {
+//   const _CharacterItem({Key? key, required this.character, required this.onTap})
+//       : super(key: key);
+
+//   final Character character;
+//   final VoidCallback onTap;
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return ListTile(
+//       onTap: onTap,
+//       title: Text(character.title),
+//     );
+//   }
+// }
 
 class _CharacterItem extends StatelessWidget {
   const _CharacterItem({Key? key, required this.character, required this.onTap})
@@ -119,9 +166,32 @@ class _CharacterItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListTile(
-      onTap: onTap,
-      title: Text(character.title),
+    return Card(
+      margin: const EdgeInsets.symmetric(vertical: 8.0),
+      elevation: 4,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(16.0),
+      ),
+      child: InkWell(
+        onTap: onTap,
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Row(
+            children: [
+              const Icon(Icons.person, size: 48.0),
+              const SizedBox(width: 16.0),
+              Expanded(
+                child: Text(
+                  character.title,
+                  style: Theme.of(context).textTheme.subtitle1,
+                  overflow: TextOverflow.ellipsis,
+                  maxLines: 1,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
     );
   }
 }
