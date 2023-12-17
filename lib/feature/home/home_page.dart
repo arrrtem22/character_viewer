@@ -141,6 +141,22 @@ class _SmallHomeView extends StatelessWidget {
   }
 }
 
+// class _CharacterItem extends StatelessWidget {
+//   const _CharacterItem({Key? key, required this.character, required this.onTap})
+//       : super(key: key);
+
+//   final Character character;
+//   final VoidCallback onTap;
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return ListTile(
+//       onTap: onTap,
+//       title: Text(character.title),
+//     );
+//   }
+// }
+
 class _CharacterItem extends StatelessWidget {
   const _CharacterItem({Key? key, required this.character, required this.onTap})
       : super(key: key);
@@ -150,9 +166,32 @@ class _CharacterItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListTile(
-      onTap: onTap,
-      title: Text(character.title),
+    return Card(
+      margin: const EdgeInsets.symmetric(vertical: 8.0),
+      elevation: 4,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(16.0),
+      ),
+      child: InkWell(
+        onTap: onTap,
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Row(
+            children: [
+              const Icon(Icons.person, size: 48.0),
+              const SizedBox(width: 16.0),
+              Expanded(
+                child: Text(
+                  character.title,
+                  style: Theme.of(context).textTheme.subtitle1,
+                  overflow: TextOverflow.ellipsis,
+                  maxLines: 1,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
     );
   }
 }
