@@ -10,18 +10,25 @@ part 'characters_api.g.dart';
 abstract class CharactersApi {
   @factoryMethod
   factory CharactersApi(Dio dio) =>
-      FakeApi.characters.isEnabled
-        ? FakeCharactersApi()
-        : _CharactersApi(dio);
+      FakeApi.characters.isEnabled ? FakeCharactersApi() : _CharactersApi(dio);
 
   @GET('')
   Future<Characters> getCharacters();
+
+  @POST('')
+  Future<Characters> addCharacter();
 }
 
 class FakeCharactersApi implements CharactersApi {
   @override
   Future<Characters> getCharacters() {
     // TODO: implement ping
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<Characters> addCharacter() {
+    // TODO: implement addCharacter
     throw UnimplementedError();
   }
 }
