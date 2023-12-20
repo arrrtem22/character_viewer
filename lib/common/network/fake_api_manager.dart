@@ -1,5 +1,4 @@
 import 'package:character_viewer/common/common.dart';
-// ignore: unused_import
 import 'package:flutter/foundation.dart';
 import 'package:logger/logger.dart';
 
@@ -14,8 +13,7 @@ enum FakeApi {
 
 class FakeApiManager {
   static final _enabledFakeApi = <FakeApi>{
-    //Place here fake api that should be enabled by default
-    // if (kDebugMode) FakeApi.characters,
+    if (kDebugMode) FakeApi.characters,
   };
 
   static bool isFakeApiEnabled(FakeApi api) => _enabledFakeApi.contains(api);
