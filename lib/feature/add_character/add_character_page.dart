@@ -1,5 +1,9 @@
+import 'package:character_viewer/common/network/api/characters_api.dart';
+import 'package:character_viewer/common/network/dto/character.dart';
+import 'package:character_viewer/common/service/character_service.dart';
 import 'package:character_viewer/feature/add_character/cubit/add_character_cubit.dart';
 import 'package:character_viewer/feature/add_character/cubit/add_character_state.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -13,7 +17,11 @@ class AddCharacterPage extends StatelessWidget {
         title: const Text('Add Character'),
       ),
       body: BlocProvider(
-        create: (context) => CharacterCubit(),
+        create: (context) => CharacterCubit(
+          charactersService: CharactersService(
+            charactersApi: CharactersApi(Dio()),
+          ),
+        ),
         child: AddCharacterForm(),
       ),
     );
@@ -21,14 +29,25 @@ class AddCharacterPage extends StatelessWidget {
 }
 
 class AddCharacterForm extends StatelessWidget {
-  final TextEditingController _nameController = TextEditingController();
+  final TextEditingController titleController = TextEditingController();
+  final TextEditingController imageUrlController = TextEditingController();
+  final TextEditingController descriptionController = TextEditingController();
 
   AddCharacterForm({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<CharacterCubit, CharacterState>(
-      listener: (context, state) {},
+      listener: (context, state) {
+        if (state is CharacterAddedSuccess) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('Character added: ${state.character.title}'),
+              backgroundColor: Colors.green,
+            ),
+          );
+        }
+      },
       builder: (context, state) {
         return Scaffold(
           body: _buildUI(context, state),
@@ -41,7 +60,7 @@ class AddCharacterForm extends StatelessWidget {
     if (state is CharacterInitial) {
       return _buildInitialUI(context);
     } else if (state is CharacterAddedSuccess) {
-      return _buildSuccessUI(context);
+      return _buildSuccessUI(context, state.character);
     } else if (state is CharacterAddingError) {
       return _buildErrorUI(context, state.error);
     } else {
@@ -58,19 +77,39 @@ class AddCharacterForm extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           TextField(
-            controller: _nameController,
-            decoration: const InputDecoration(labelText: 'Character Name'),
+            controller: titleController,
+            decoration: const InputDecoration(labelText: 'Character Title'),
+          ),
+          const SizedBox(height: 20),
+          TextField(
+            controller: imageUrlController,
+            decoration: const InputDecoration(labelText: 'Image URL'),
+          ),
+          const SizedBox(height: 20),
+          TextField(
+            controller: descriptionController,
+            decoration:
+                const InputDecoration(labelText: 'Character Description'),
           ),
           const SizedBox(height: 20),
           ElevatedButton(
             onPressed: () {
-              final name = _nameController.text.trim();
-              if (name.isNotEmpty) {
-                context.read<CharacterCubit>().addCharacter(name);
+              final title = titleController.text.trim();
+              final imageUrl = imageUrlController.text.trim();
+              final description = descriptionController.text.trim();
+
+              if (title.isNotEmpty &&
+                  imageUrl.isNotEmpty &&
+                  description.isNotEmpty) {
+                context.read<CharacterCubit>().addCharacter(
+                      title: title,
+                      imageUrl: imageUrl,
+                      description: description,
+                    );
               } else {
                 ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(
-                    content: Text('Name could not be empty'),
+                    content: Text('All fields must be filled'),
                     backgroundColor: Colors.red,
                   ),
                 );
@@ -83,21 +122,25 @@ class AddCharacterForm extends StatelessWidget {
     );
   }
 
-  Widget _buildSuccessUI(BuildContext context) {
-    return const Center(
+  Widget _buildSuccessUI(BuildContext context, Character character) {
+    return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(
+          const Icon(
             Icons.check_circle,
             color: Colors.green,
             size: 50,
           ),
-          SizedBox(height: 10),
-          Text(
+          const SizedBox(height: 10),
+          const Text(
             'Character added!',
             style: TextStyle(fontSize: 18, color: Colors.green),
           ),
+          // show added items
+          Text('Title: ${character.title}'),
+          Text('Image URL: ${character.imageUrl}'),
+          Text('Description: ${character.description}'),
         ],
       ),
     );
@@ -123,7 +166,7 @@ class AddCharacterForm extends StatelessWidget {
             onPressed: () {
               context
                   .read<CharacterCubit>()
-                  .addCharacter(_nameController.text.trim());
+                  .addCharacter(title: '', imageUrl: '', description: '');
             },
             child: const Text('Repeat'),
           ),

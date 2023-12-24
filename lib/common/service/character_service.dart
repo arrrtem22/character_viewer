@@ -11,5 +11,11 @@ class CharactersService {
 
   Future<Characters> getCharacters() => _charactersApi.getCharacters();
 
-  void addCharacter() => _charactersApi.addCharacter();
+  Future<void> addCharacter(Character character) async {
+    try {
+      await _charactersApi.addCharacter(character);
+    } catch (e) {
+      throw Exception('Error during adding the character: $e');
+    }
+  }
 }

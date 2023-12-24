@@ -2,7 +2,6 @@ import 'package:character_viewer/common/common.dart';
 import 'package:dio/dio.dart';
 import 'package:injectable/injectable.dart';
 import 'package:retrofit/retrofit.dart';
-import 'package:character_viewer/common/common.dart';
 
 part 'characters_api.g.dart';
 
@@ -17,36 +16,42 @@ abstract class CharactersApi {
   Future<Characters> getCharacters();
 
   @POST('')
-  Future<Characters> addCharacter();
+  Future<Characters> addCharacter(
+    @Body() Character character,
+  );
 }
 
 class FakeCharactersApi implements CharactersApi {
+  // variable in FakeCharactersApi for ex fakeCharacters and work with it
+  List<Character> fakeCharacters = [];
+
   @override
   Future<Characters> getCharacters() async {
-    // Simulate fetching characters from a fake API
-    final fakeCharacters = [
-      const Character(
-        title: 'Fake Character 1',
-        imageUrl: 'https://via.placeholder.com/600/92c952',
-        description: 'This is a fake character description.',
-      ),
-      const Character(
-        title: 'Fake Character 2',
-        imageUrl: 'https://via.placeholder.com/600/7286a7',
-        description: 'Another fake character description.',
-      ),
-    ];
+    if (fakeCharacters.isEmpty) {
+      fakeCharacters = const [
+        Character(
+          title: 'Fake Character 1',
+          imageUrl: 'https://via.placeholder.com/600/92c952',
+          description: 'This is a fake character description.',
+        ),
+        Character(
+          title: 'Fake Character 2',
+          imageUrl: 'https://via.placeholder.com/600/7286a7',
+          description: 'Another fake character description.',
+        ),
+      ];
+    }
 
-    final fakeResponse = Characters(characters: fakeCharacters);
+    await Future.delayed(Duration(seconds: 2));
 
-    await Future.delayed(const Duration(seconds: 2));
-
-    return fakeResponse;
+    print('getCharacters method called');
+    return Characters(characters: fakeCharacters);
   }
 
   @override
-  Future<Characters> addCharacter() async {
-    final fakeResponse = Characters(characters: []);
-    return fakeResponse;
+  Future<Characters> addCharacter(@Body() Character character) async {
+    fakeCharacters.add(character); // adding the new character
+    print('Method addCharacter called $fakeCharacters');
+    return Characters(characters: fakeCharacters);
   }
 }
