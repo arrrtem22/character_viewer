@@ -23,32 +23,29 @@ abstract class CharactersApi {
 
 class FakeCharactersApi implements CharactersApi {
   // variable in FakeCharactersApi for ex fakeCharacters and work with it
-  List<Character> fakeCharacters = [];
+  List<Character> fakeCharacters = const [
+    Character(
+      title: 'Fake Character 1',
+      imageUrl: 'https://via.placeholder.com/600/92c952',
+      description: 'This is a fake character description.',
+    ),
+    Character(
+      title: 'Fake Character 2',
+      imageUrl: 'https://via.placeholder.com/600/7286a7',
+      description: 'Another fake character description.',
+    ),
+  ];
 
   @override
   Future<Characters> getCharacters() async {
-    if (fakeCharacters.isEmpty) {
-      fakeCharacters = const [
-        Character(
-          title: 'Fake Character 1',
-          imageUrl: 'https://via.placeholder.com/600/92c952',
-          description: 'This is a fake character description.',
-        ),
-        Character(
-          title: 'Fake Character 2',
-          imageUrl: 'https://via.placeholder.com/600/7286a7',
-          description: 'Another fake character description.',
-        ),
-      ];
-    }
-
-    await Future.delayed(Duration(seconds: 2));
+    await Future.delayed(const Duration(seconds: 2));
 
     return Characters(characters: fakeCharacters);
   }
 
   @override
   Future<Characters> addCharacter(@Body() Character newCharacter) async {
+    await Future.delayed(const Duration(seconds: 2));
     fakeCharacters.add(newCharacter); // adding the new character
     return Characters(characters: fakeCharacters);
   }
