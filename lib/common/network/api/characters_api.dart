@@ -17,7 +17,7 @@ abstract class CharactersApi {
 
   @POST('')
   Future<Characters> addCharacter(
-    @Body() Character character,
+    @Body() Character newCharacter,
   );
 }
 
@@ -44,14 +44,12 @@ class FakeCharactersApi implements CharactersApi {
 
     await Future.delayed(Duration(seconds: 2));
 
-    print('getCharacters method called');
     return Characters(characters: fakeCharacters);
   }
 
   @override
-  Future<Characters> addCharacter(@Body() Character character) async {
-    fakeCharacters.add(character); // adding the new character
-    print('Method addCharacter called $fakeCharacters');
+  Future<Characters> addCharacter(@Body() Character newCharacter) async {
+    fakeCharacters.add(newCharacter); // adding the new character
     return Characters(characters: fakeCharacters);
   }
 }
