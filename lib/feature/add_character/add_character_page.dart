@@ -1,48 +1,41 @@
-import 'package:character_viewer/common/network/api/characters_api.dart';
-import 'package:character_viewer/common/network/dto/character.dart';
-import 'package:character_viewer/common/service/character_service.dart';
-import 'package:character_viewer/feature/add_character/cubit/add_character_cubit.dart';
-import 'package:character_viewer/feature/add_character/cubit/add_character_state.dart';
-import 'package:dio/dio.dart';
+import 'package:character_viewer/common/common.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
+import 'cubit/add_character_cubit.dart';
 
 class AddCharacterPage extends StatelessWidget {
   const AddCharacterPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Add Character'),
-      ),
-      body: BlocProvider(
-        create: (context) => CharacterCubit(
-          charactersService: CharactersService(
-            charactersApi: CharactersApi(Dio()),
-          ),
+    return BlocProvider(
+      create: (context) => getIt<AddCharacterCubit>(),
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text('Add Character'),
         ),
-        child: AddCharacterForm(),
+        body: _AddCharacterView(),
       ),
     );
   }
 }
 
-class AddCharacterForm extends StatelessWidget {
+class _AddCharacterView extends StatelessWidget {
   final TextEditingController titleController = TextEditingController();
   final TextEditingController imageUrlController = TextEditingController();
   final TextEditingController descriptionController = TextEditingController();
 
-  AddCharacterForm({Key? key}) : super(key: key);
+  _AddCharacterView({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<CharacterCubit, CharacterState>(
+    return BlocConsumer<AddCharacterCubit, AddCharacterState>(
       listener: (context, state) {
-        if (state is CharacterAddedSuccess) {
+        if (state is AddCharacterStateSuccess) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: Text('Character added: ${state.character.title}'),
+              content: Text('Character added: ${state.newCharacter.title}'),
               backgroundColor: Colors.green,
             ),
           );
@@ -56,12 +49,12 @@ class AddCharacterForm extends StatelessWidget {
     );
   }
 
-  Widget _buildUI(BuildContext context, CharacterState state) {
-    if (state is CharacterInitial) {
+  Widget _buildUI(BuildContext context, AddCharacterState state) {
+    if (state is AddCharacterStateInitial) {
       return _buildInitialUI(context);
-    } else if (state is CharacterAddedSuccess) {
-      return _buildSuccessUI(context, state.character);
-    } else if (state is CharacterAddingError) {
+    } else if (state is AddCharacterStateSuccess) {
+      return _buildSuccessUI(context, state.newCharacter);
+    } else if (state is AddCharacterStateFailure) {
       return _buildErrorUI(context, state.error);
     } else {
       return const Center(
@@ -76,20 +69,13 @@ class AddCharacterForm extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          TextField(
-            controller: titleController,
-            decoration: const InputDecoration(labelText: 'Character Title'),
-          ),
+          _buildNeumorphicTextField(titleController, 'Character Title'),
           const SizedBox(height: 20),
-          TextField(
-            controller: imageUrlController,
-            decoration: const InputDecoration(labelText: 'Image URL'),
-          ),
+          _buildNeumorphicTextField(imageUrlController, 'Image URL'),
           const SizedBox(height: 20),
-          TextField(
-            controller: descriptionController,
-            decoration:
-                const InputDecoration(labelText: 'Character Description'),
+          _buildNeumorphicTextField(
+            descriptionController,
+            'Character Description',
           ),
           const SizedBox(height: 20),
           ElevatedButton(
@@ -101,7 +87,7 @@ class AddCharacterForm extends StatelessWidget {
               if (title.isNotEmpty &&
                   imageUrl.isNotEmpty &&
                   description.isNotEmpty) {
-                context.read<CharacterCubit>().addCharacter(
+                context.read<AddCharacterCubit>().addCharacter(
                       title: title,
                       imageUrl: imageUrl,
                       description: description,
@@ -115,9 +101,50 @@ class AddCharacterForm extends StatelessWidget {
                 );
               }
             },
+            style: ElevatedButton.styleFrom(
+              primary: Colors.grey[200], // фон кнопки
+              onPrimary: Colors.grey[800], // цвет текста кнопки
+              elevation: 8,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(16),
+              ),
+            ),
             child: const Text('Add Character'),
           ),
         ],
+      ),
+    );
+  }
+
+  Widget _buildNeumorphicTextField(
+      TextEditingController controller, String labelText) {
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.grey[200], // Цвет фона текстового поля
+        borderRadius:
+            BorderRadius.circular(16), // Скругление углов текстового поля
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey[300]!, // Цвет тени
+            offset: Offset(5, 5), // Смещение тени по X и Y
+            blurRadius: 10, // Радиус размытия тени
+            spreadRadius: 1, // Размах тени
+          ),
+          BoxShadow(
+            color: Colors.white, // Цвет второй тени (белая)
+            offset: Offset(-5, -5), // Смещение второй тени по X и Y
+            blurRadius: 10, // Радиус размытия второй тени
+            spreadRadius: 1, // Размах второй тени
+          ),
+        ],
+      ),
+      child: TextField(
+        controller: controller,
+        decoration: InputDecoration(
+          labelText: labelText,
+          contentPadding: const EdgeInsets.symmetric(horizontal: 16),
+          border: InputBorder.none, // Убираем границы текстового поля
+        ),
       ),
     );
   }
@@ -165,7 +192,7 @@ class AddCharacterForm extends StatelessWidget {
           ElevatedButton(
             onPressed: () {
               context
-                  .read<CharacterCubit>()
+                  .read<AddCharacterCubit>()
                   .addCharacter(title: '', imageUrl: '', description: '');
             },
             child: const Text('Repeat'),

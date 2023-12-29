@@ -1,15 +1,12 @@
-import 'package:character_viewer/common/network/dto/character.dart';
+part of 'add_character_cubit.dart';
 
-abstract class CharacterState {}
-
-class CharacterInitial extends CharacterState {}
-
-class CharacterAddedSuccess extends CharacterState {
-  final Character character;
-  CharacterAddedSuccess(this.character);
-}
-
-class CharacterAddingError extends CharacterState {
-  final String error;
-  CharacterAddingError(this.error);
+@freezed
+class AddCharacterState with _$AddCharacterState {
+  const factory AddCharacterState.initial() = AddCharacterStateInitial;
+  const factory AddCharacterState.loading(Character newCharacter) =
+      AddCharacterStateLoading;
+  const factory AddCharacterState.success(Character newCharacter) =
+      AddCharacterStateSuccess;
+  const factory AddCharacterState.failure({required String error}) =
+      AddCharacterStateFailure;
 }

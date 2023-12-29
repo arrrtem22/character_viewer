@@ -1,15 +1,18 @@
 import 'package:character_viewer/common/network/dto/character.dart';
 import 'package:character_viewer/common/service/character_service.dart';
-import 'package:character_viewer/feature/add_character/cubit/add_character_state.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:injectable/injectable.dart';
 
-class CharacterCubit extends Cubit<CharacterState> {
+part 'add_character_cubit.freezed.dart';
+part 'add_character_state.dart';
+
+@injectable
+class AddCharacterCubit extends Cubit<AddCharacterState> {
   final CharactersService _charactersService;
 
-  CharacterCubit({
-    required CharactersService charactersService,
-  })  : _charactersService = charactersService,
-        super(CharacterInitial());
+  AddCharacterCubit(this._charactersService)
+      : super(const AddCharacterState.initial());
 
   void addCharacter({
     required String title,
@@ -24,10 +27,10 @@ class CharacterCubit extends Cubit<CharacterState> {
       );
 
       _charactersService.addCharacter(newCharacter);
-      emit(CharacterAddedSuccess(newCharacter));
+      emit(AddCharacterStateSuccess(newCharacter));
     } catch (e) {
-      emit(CharacterAddingError(
-          'Something happened during loading the character: $e'));
+      emit(const AddCharacterStateFailure(
+          error: 'Something happened during loading the character'));
     }
   }
 }
