@@ -1,9 +1,9 @@
 import 'package:adaptive_layout/adaptive_layout.dart';
 import 'package:character_viewer/common/common.dart';
-import 'package:character_viewer/feature/add_character/add_character_page.dart';
 import 'package:character_viewer/feature/detail/detail.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 
 import 'cubit/home_cubit.dart';
 
@@ -72,14 +72,9 @@ class _LargeHomeView extends StatelessWidget {
                     : const Center(child: Text('Select character'))),
             FloatingActionButton(
               onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => AddCharacterPage(),
-                  ),
-                );
+                GoRouter.of(context).go('/addCharacter');
               },
-              child: Icon(Icons.add),
+              child: const Icon(Icons.add),
             ),
           ],
         );
@@ -124,14 +119,9 @@ class _SmallHomeView extends StatelessWidget {
               right: 16.0,
               child: FloatingActionButton(
                 onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => AddCharacterPage(),
-                    ),
-                  );
+                  GoRouter.of(context).go('/addCharacter');
                 },
-                child: Icon(Icons.add),
+                child: const Icon(Icons.add),
               ),
             ),
           ],
