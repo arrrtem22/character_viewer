@@ -20,6 +20,13 @@ class AddCharacterCubit extends Cubit<AddCharacterState> {
     required String description,
   }) {
     try {
+      if (title.isEmpty || imageUrl.isEmpty || description.isEmpty) {
+        emit(const AddCharacterStateFailure(
+          error: 'All fields must be filled',
+        ));
+        return;
+      }
+
       final newCharacter = Character(
         title: title,
         imageUrl: imageUrl,

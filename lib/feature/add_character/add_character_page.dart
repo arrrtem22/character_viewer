@@ -1,3 +1,5 @@
+// ignore_for_file: library_private_types_in_public_api
+
 import 'package:character_viewer/common/common.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -13,20 +15,25 @@ class AddCharacterPage extends StatelessWidget {
       create: (context) => getIt<AddCharacterCubit>(),
       child: Scaffold(
         appBar: AppBar(
-          title: const Text('Add Character'),
+          title: const Text('Add character'),
         ),
-        body: _AddCharacterView(),
+        body: const AddCharacterView(),
       ),
     );
   }
 }
 
-class _AddCharacterView extends StatelessWidget {
+class AddCharacterView extends StatefulWidget {
+  const AddCharacterView({super.key});
+
+  @override
+  _AddCharacterViewState createState() => _AddCharacterViewState();
+}
+
+class _AddCharacterViewState extends State<AddCharacterView> {
   final TextEditingController titleController = TextEditingController();
   final TextEditingController imageUrlController = TextEditingController();
   final TextEditingController descriptionController = TextEditingController();
-
-  _AddCharacterView({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -39,166 +46,159 @@ class _AddCharacterView extends StatelessWidget {
               backgroundColor: Colors.green,
             ),
           );
+        } else if (state is AddCharacterStateFailure) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('Error: ${state.error}'),
+              backgroundColor: Colors.red,
+            ),
+          );
         }
       },
       builder: (context, state) {
         return Scaffold(
-          body: _buildUI(context, state),
+          body: BuildUI(
+            titleController: titleController,
+            imageUrlController: imageUrlController,
+            descriptionController: descriptionController,
+            onPressed: () {
+              context.read<AddCharacterCubit>().addCharacter(
+                    title: titleController.text,
+                    imageUrl: imageUrlController.text,
+                    description: descriptionController.text,
+                  );
+            },
+          ),
         );
       },
     );
   }
+}
 
-  Widget _buildUI(BuildContext context, AddCharacterState state) {
-    if (state is AddCharacterStateInitial) {
-      return _buildInitialUI(context);
-    } else if (state is AddCharacterStateSuccess) {
-      return _buildSuccessUI(context, state.newCharacter);
-    } else if (state is AddCharacterStateFailure) {
-      return _buildErrorUI(context, state.error);
-    } else {
-      return const Center(
-        child: CircularProgressIndicator(),
-      );
-    }
-  }
+class BuildUI extends StatefulWidget {
+  final TextEditingController titleController;
+  final TextEditingController imageUrlController;
+  final TextEditingController descriptionController;
+  final VoidCallback onPressed;
 
-  Widget _buildInitialUI(BuildContext context) {
+  const BuildUI({
+    Key? key,
+    required this.titleController,
+    required this.imageUrlController,
+    required this.descriptionController,
+    required this.onPressed,
+  }) : super(key: key);
+
+  @override
+  _BuildUIState createState() => _BuildUIState();
+}
+
+class _BuildUIState extends State<BuildUI> {
+  @override
+  Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(16.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          _buildNeumorphicTextField(titleController, 'Character Title'),
-          const SizedBox(height: 20),
-          _buildNeumorphicTextField(imageUrlController, 'Image URL'),
-          const SizedBox(height: 20),
-          _buildNeumorphicTextField(
-            descriptionController,
-            'Character Description',
+          NeumorphicTextFieldWidget(
+            controller: widget.titleController,
+            labelText: 'Character',
           ),
           const SizedBox(height: 20),
-          ElevatedButton(
-            onPressed: () {
-              final title = titleController.text.trim();
-              final imageUrl = imageUrlController.text.trim();
-              final description = descriptionController.text.trim();
-
-              if (title.isNotEmpty &&
-                  imageUrl.isNotEmpty &&
-                  description.isNotEmpty) {
-                context.read<AddCharacterCubit>().addCharacter(
-                      title: title,
-                      imageUrl: imageUrl,
-                      description: description,
-                    );
-              } else {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(
-                    content: Text('All fields must be filled'),
-                    backgroundColor: Colors.red,
-                  ),
-                );
-              }
-            },
-            style: ElevatedButton.styleFrom(
-              primary: Colors.grey[200], // фон кнопки
-              onPrimary: Colors.grey[800], // цвет текста кнопки
-              elevation: 8,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(16),
-              ),
-            ),
-            child: const Text('Add Character'),
+          NeumorphicTextFieldWidget(
+            controller: widget.imageUrlController,
+            labelText: 'URL изображения',
           ),
+          const SizedBox(height: 20),
+          NeumorphicTextFieldWidget(
+            controller: widget.descriptionController,
+            labelText: 'Description',
+          ),
+          const SizedBox(height: 20),
+          AddCharacterButtonWidget(onPressed: widget.onPressed),
         ],
       ),
     );
   }
+}
 
-  Widget _buildNeumorphicTextField(
-      TextEditingController controller, String labelText) {
+class NeumorphicTextFieldWidget extends StatefulWidget {
+  final TextEditingController controller;
+  final String labelText;
+
+  const NeumorphicTextFieldWidget({
+    Key? key,
+    required this.controller,
+    required this.labelText,
+  }) : super(key: key);
+
+  @override
+  _NeumorphicTextFieldWidgetState createState() =>
+      _NeumorphicTextFieldWidgetState();
+}
+
+class _NeumorphicTextFieldWidgetState extends State<NeumorphicTextFieldWidget> {
+  @override
+  Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: Colors.grey[200], // Цвет фона текстового поля
-        borderRadius:
-            BorderRadius.circular(16), // Скругление углов текстового поля
+        color: Colors.grey[200],
+        borderRadius: BorderRadius.circular(16),
         boxShadow: [
           BoxShadow(
-            color: Colors.grey[300]!, // Цвет тени
-            offset: Offset(5, 5), // Смещение тени по X и Y
-            blurRadius: 10, // Радиус размытия тени
-            spreadRadius: 1, // Размах тени
+            color: Colors.grey[300]!,
+            offset: const Offset(5, 5),
+            blurRadius: 10,
+            spreadRadius: 1,
           ),
-          BoxShadow(
-            color: Colors.white, // Цвет второй тени (белая)
-            offset: Offset(-5, -5), // Смещение второй тени по X и Y
-            blurRadius: 10, // Радиус размытия второй тени
-            spreadRadius: 1, // Размах второй тени
+          const BoxShadow(
+            color: Colors.white,
+            offset: Offset(-5, -5),
+            blurRadius: 10,
+            spreadRadius: 1,
           ),
         ],
       ),
       child: TextField(
-        controller: controller,
+        controller: widget.controller,
         decoration: InputDecoration(
-          labelText: labelText,
+          labelText: widget.labelText,
           contentPadding: const EdgeInsets.symmetric(horizontal: 16),
-          border: InputBorder.none, // Убираем границы текстового поля
+          border: InputBorder.none,
         ),
       ),
     );
   }
+}
 
-  Widget _buildSuccessUI(BuildContext context, Character character) {
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          const Icon(
-            Icons.check_circle,
-            color: Colors.green,
-            size: 50,
-          ),
-          const SizedBox(height: 10),
-          const Text(
-            'Character added!',
-            style: TextStyle(fontSize: 18, color: Colors.green),
-          ),
-          // show added items
-          Text('Title: ${character.title}'),
-          Text('Image URL: ${character.imageUrl}'),
-          Text('Description: ${character.description}'),
-        ],
-      ),
-    );
-  }
+class AddCharacterButtonWidget extends StatefulWidget {
+  final VoidCallback onPressed;
 
-  Widget _buildErrorUI(BuildContext context, String error) {
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          const Icon(
-            Icons.error,
-            color: Colors.red,
-            size: 50,
-          ),
-          const SizedBox(height: 10),
-          Text(
-            'Error: $error',
-            style: const TextStyle(fontSize: 18, color: Colors.red),
-          ),
-          const SizedBox(height: 10),
-          ElevatedButton(
-            onPressed: () {
-              context
-                  .read<AddCharacterCubit>()
-                  .addCharacter(title: '', imageUrl: '', description: '');
-            },
-            child: const Text('Repeat'),
-          ),
-        ],
+  const AddCharacterButtonWidget({
+    Key? key,
+    required this.onPressed,
+  }) : super(key: key);
+
+  @override
+  _AddCharacterButtonWidgetState createState() =>
+      _AddCharacterButtonWidgetState();
+}
+
+class _AddCharacterButtonWidgetState extends State<AddCharacterButtonWidget> {
+  @override
+  Widget build(BuildContext context) {
+    return ElevatedButton(
+      onPressed: widget.onPressed,
+      style: ElevatedButton.styleFrom(
+        primary: Colors.grey[200],
+        onPrimary: Colors.grey[800],
+        elevation: 8,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(16),
+        ),
       ),
+      child: const Text('Add character'),
     );
   }
 }
