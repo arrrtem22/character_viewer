@@ -1,3 +1,5 @@
+// add_character_cubit.dart
+
 import 'package:character_viewer/common/network/dto/character.dart';
 import 'package:character_viewer/common/service/character_service.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -15,26 +17,20 @@ class AddCharacterCubit extends Cubit<AddCharacterState> {
       : super(const AddCharacterState.initial());
 
   void addCharacter({
-    required String title,
-    required String imageUrl,
-    required String description,
+    required Character character,
   }) {
     try {
-      if (title.isEmpty || imageUrl.isEmpty || description.isEmpty) {
+      if (character.title.isEmpty ||
+          character.imageUrl.isEmpty ||
+          character.description.isEmpty) {
         emit(const AddCharacterStateFailure(
           error: 'All fields must be filled',
         ));
         return;
       }
 
-      final newCharacter = Character(
-        title: title,
-        imageUrl: imageUrl,
-        description: description,
-      );
-
-      _charactersService.addCharacter(newCharacter);
-      emit(AddCharacterStateSuccess(newCharacter));
+      _charactersService.addCharacter(character);
+      emit(AddCharacterStateSuccess(character));
     } catch (e) {
       emit(const AddCharacterStateFailure(
           error: 'Something happened during loading the character'));

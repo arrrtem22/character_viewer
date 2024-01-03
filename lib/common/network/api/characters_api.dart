@@ -1,3 +1,5 @@
+// ignore_for_file: inference_failure_on_instance_creation, depend_on_referenced_packages
+
 import 'package:character_viewer/common/common.dart';
 import 'package:dio/dio.dart';
 import 'package:injectable/injectable.dart';
@@ -17,7 +19,7 @@ abstract class CharactersApi {
 
   @POST('')
   Future<Characters> addCharacter(
-    @Body() Character newCharacter,
+    @Body() Character character,
   );
 }
 
@@ -44,9 +46,9 @@ class FakeCharactersApi implements CharactersApi {
   }
 
   @override
-  Future<Characters> addCharacter(@Body() Character newCharacter) async {
+  Future<Characters> addCharacter(@Body() Character character) async {
     await Future.delayed(const Duration(seconds: 2));
-    fakeCharacters.add(newCharacter); // adding the new character
+    fakeCharacters.add(character);
     return Characters(characters: fakeCharacters);
   }
 }

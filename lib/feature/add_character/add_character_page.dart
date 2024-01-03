@@ -24,7 +24,7 @@ class AddCharacterPage extends StatelessWidget {
 }
 
 class AddCharacterView extends StatefulWidget {
-  const AddCharacterView({super.key});
+  const AddCharacterView({Key? key}) : super(key: key);
 
   @override
   _AddCharacterViewState createState() => _AddCharacterViewState();
@@ -63,9 +63,11 @@ class _AddCharacterViewState extends State<AddCharacterView> {
             descriptionController: descriptionController,
             onPressed: () {
               context.read<AddCharacterCubit>().addCharacter(
-                    title: titleController.text,
-                    imageUrl: imageUrlController.text,
-                    description: descriptionController.text,
+                    character: Character(
+                      title: titleController.text,
+                      imageUrl: imageUrlController.text,
+                      description: descriptionController.text,
+                    ),
                   );
             },
           ),
@@ -108,7 +110,7 @@ class _BuildUIState extends State<BuildUI> {
           const SizedBox(height: 20),
           NeumorphicTextFieldWidget(
             controller: widget.imageUrlController,
-            labelText: 'URL изображения',
+            labelText: 'Image URL',
           ),
           const SizedBox(height: 20),
           NeumorphicTextFieldWidget(
@@ -172,7 +174,7 @@ class _NeumorphicTextFieldWidgetState extends State<NeumorphicTextFieldWidget> {
   }
 }
 
-class AddCharacterButtonWidget extends StatefulWidget {
+class AddCharacterButtonWidget extends StatelessWidget {
   final VoidCallback onPressed;
 
   const AddCharacterButtonWidget({
@@ -181,15 +183,9 @@ class AddCharacterButtonWidget extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  _AddCharacterButtonWidgetState createState() =>
-      _AddCharacterButtonWidgetState();
-}
-
-class _AddCharacterButtonWidgetState extends State<AddCharacterButtonWidget> {
-  @override
   Widget build(BuildContext context) {
     return ElevatedButton(
-      onPressed: widget.onPressed,
+      onPressed: onPressed,
       style: ElevatedButton.styleFrom(
         primary: Colors.grey[200],
         onPrimary: Colors.grey[800],

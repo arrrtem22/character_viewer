@@ -11,6 +11,6 @@ class CharactersService {
 
   Future<Characters> getCharacters() => _charactersApi.getCharacters();
 
-  Future<void> addCharacter(Character newCharacter) =>
-      _charactersApi.addCharacter(newCharacter);
+  Future<Characters> addCharacter(Character character) =>
+      _charactersApi.addCharacter(character);
 }
