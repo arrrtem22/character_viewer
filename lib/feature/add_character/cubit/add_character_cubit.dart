@@ -16,21 +16,21 @@ class AddCharacterCubit extends Cubit<AddCharacterState> {
   AddCharacterCubit(this._charactersService)
       : super(const AddCharacterState.initial());
 
-  void addCharacter({
-    required Character character,
-  }) {
+  Future<void> addCharacter({
+    required Character newCharacter,
+  }) async {
     try {
-      if (character.title.isEmpty ||
-          character.imageUrl.isEmpty ||
-          character.description.isEmpty) {
+      if (newCharacter.title.isEmpty ||
+          newCharacter.imageUrl.isEmpty ||
+          newCharacter.description.isEmpty) {
         emit(const AddCharacterStateFailure(
           error: 'All fields must be filled',
         ));
         return;
       }
 
-      _charactersService.addCharacter(character);
-      emit(AddCharacterStateSuccess(character));
+      await _charactersService.addCharacter(newCharacter);
+      emit(AddCharacterStateSuccess(newCharacter));
     } catch (e) {
       emit(const AddCharacterStateFailure(
           error: 'Something happened during loading the character'));

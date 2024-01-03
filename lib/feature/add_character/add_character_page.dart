@@ -63,7 +63,7 @@ class _AddCharacterViewState extends State<AddCharacterView> {
             descriptionController: descriptionController,
             onPressed: () {
               context.read<AddCharacterCubit>().addCharacter(
-                    character: Character(
+                    newCharacter: Character(
                       title: titleController.text,
                       imageUrl: imageUrlController.text,
                       description: descriptionController.text,
