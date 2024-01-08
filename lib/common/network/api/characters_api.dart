@@ -18,14 +18,14 @@ abstract class CharactersApi {
   Future<Characters> getCharacters();
 
   @POST('')
-  Future<Characters> addCharacter(
+  Future<void> addCharacter(
     @Body() Character newCharacter,
   );
 }
 
 class FakeCharactersApi implements CharactersApi {
   // variable in FakeCharactersApi for ex fakeCharacters and work with it
-  List<Character> fakeCharacters = const [
+  List<Character> fakeCharacters = [
     Character(
       title: 'Fake Character 1',
       imageUrl: 'https://via.placeholder.com/600/92c952',
@@ -46,9 +46,9 @@ class FakeCharactersApi implements CharactersApi {
   }
 
   @override
-  Future<Characters> addCharacter(@Body() Character newCharacter) async {
+  Future<void> addCharacter(@Body() Character newCharacter) async {
     await Future.delayed(const Duration(seconds: 2));
     fakeCharacters.add(newCharacter);
-    return Characters(characters: fakeCharacters);
+    print('all $fakeCharacters');
   }
 }

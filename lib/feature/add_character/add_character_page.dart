@@ -1,5 +1,3 @@
-// ignore_for_file: library_private_types_in_public_api
-
 import 'package:character_viewer/common/common.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -17,20 +15,20 @@ class AddCharacterPage extends StatelessWidget {
         appBar: AppBar(
           title: const Text('Add character'),
         ),
-        body: const AddCharacterView(),
+        body: const _AddCharacterView(),
       ),
     );
   }
 }
 
-class AddCharacterView extends StatefulWidget {
-  const AddCharacterView({Key? key}) : super(key: key);
+class _AddCharacterView extends StatefulWidget {
+  const _AddCharacterView({Key? key}) : super(key: key);
 
   @override
   _AddCharacterViewState createState() => _AddCharacterViewState();
 }
 
-class _AddCharacterViewState extends State<AddCharacterView> {
+class _AddCharacterViewState extends State<_AddCharacterView> {
   final TextEditingController titleController = TextEditingController();
   final TextEditingController imageUrlController = TextEditingController();
   final TextEditingController descriptionController = TextEditingController();
@@ -77,7 +75,7 @@ class _AddCharacterViewState extends State<AddCharacterView> {
   }
 }
 
-class BuildUI extends StatefulWidget {
+class BuildUI extends StatelessWidget {
   final TextEditingController titleController;
   final TextEditingController imageUrlController;
   final TextEditingController descriptionController;
@@ -92,11 +90,6 @@ class BuildUI extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  _BuildUIState createState() => _BuildUIState();
-}
-
-class _BuildUIState extends State<BuildUI> {
-  @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(16.0),
@@ -104,28 +97,28 @@ class _BuildUIState extends State<BuildUI> {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           NeumorphicTextFieldWidget(
-            controller: widget.titleController,
+            controller: titleController,
             labelText: 'Character',
           ),
           const SizedBox(height: 20),
           NeumorphicTextFieldWidget(
-            controller: widget.imageUrlController,
+            controller: imageUrlController,
             labelText: 'Image URL',
           ),
           const SizedBox(height: 20),
           NeumorphicTextFieldWidget(
-            controller: widget.descriptionController,
+            controller: descriptionController,
             labelText: 'Description',
           ),
           const SizedBox(height: 20),
-          AddCharacterButtonWidget(onPressed: widget.onPressed),
+          AddCharacterButtonWidget(onPressed: onPressed),
         ],
       ),
     );
   }
 }
 
-class NeumorphicTextFieldWidget extends StatefulWidget {
+class NeumorphicTextFieldWidget extends StatelessWidget {
   final TextEditingController controller;
   final String labelText;
 
@@ -135,12 +128,6 @@ class NeumorphicTextFieldWidget extends StatefulWidget {
     required this.labelText,
   }) : super(key: key);
 
-  @override
-  _NeumorphicTextFieldWidgetState createState() =>
-      _NeumorphicTextFieldWidgetState();
-}
-
-class _NeumorphicTextFieldWidgetState extends State<NeumorphicTextFieldWidget> {
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -163,9 +150,9 @@ class _NeumorphicTextFieldWidgetState extends State<NeumorphicTextFieldWidget> {
         ],
       ),
       child: TextField(
-        controller: widget.controller,
+        controller: controller,
         decoration: InputDecoration(
-          labelText: widget.labelText,
+          labelText: labelText,
           contentPadding: const EdgeInsets.symmetric(horizontal: 16),
           border: InputBorder.none,
         ),
@@ -174,7 +161,7 @@ class _NeumorphicTextFieldWidgetState extends State<NeumorphicTextFieldWidget> {
   }
 }
 
-class AddCharacterButtonWidget extends StatelessWidget {
+class AddCharacterButtonWidget extends StatefulWidget {
   final VoidCallback onPressed;
 
   const AddCharacterButtonWidget({
@@ -183,9 +170,15 @@ class AddCharacterButtonWidget extends StatelessWidget {
   }) : super(key: key);
 
   @override
+  State<AddCharacterButtonWidget> createState() =>
+      _AddCharacterButtonWidgetState();
+}
+
+class _AddCharacterButtonWidgetState extends State<AddCharacterButtonWidget> {
+  @override
   Widget build(BuildContext context) {
     return ElevatedButton(
-      onPressed: onPressed,
+      onPressed: widget.onPressed,
       style: ElevatedButton.styleFrom(
         primary: Colors.grey[200],
         onPrimary: Colors.grey[800],
