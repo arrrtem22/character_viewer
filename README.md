@@ -11,7 +11,7 @@ P.S. this script only for mac
 
 # Build
 
-Flutter version: 3.7.1
+Flutter version: 3.16.4
 
 P.S. make sure you have **xcode** and **android studio** installed
 
