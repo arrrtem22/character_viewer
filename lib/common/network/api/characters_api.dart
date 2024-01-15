@@ -12,7 +12,7 @@ part 'characters_api.g.dart';
 abstract class CharactersApi {
   @factoryMethod
   factory CharactersApi(Dio dio) =>
-      FakeApi.characters.isEnabled ? FakeCharactersApi() : _CharactersApi(dio);
+      FakeApi.characters.isEnabled ? _FakeCharactersApi() : _CharactersApi(dio);
 
   @GET('')
   Future<Characters> getCharacters();
@@ -23,15 +23,15 @@ abstract class CharactersApi {
   );
 }
 
-class FakeCharactersApi implements CharactersApi {
+class _FakeCharactersApi implements CharactersApi {
   // variable in FakeCharactersApi for ex fakeCharacters and work with it
   List<Character> fakeCharacters = [
-    Character(
+    const Character(
       title: 'Fake Character 1',
       imageUrl: 'https://via.placeholder.com/600/92c952',
       description: 'This is a fake character description.',
     ),
-    Character(
+    const Character(
       title: 'Fake Character 2',
       imageUrl: 'https://via.placeholder.com/600/7286a7',
       description: 'Another fake character description.',
@@ -49,6 +49,5 @@ class FakeCharactersApi implements CharactersApi {
   Future<void> addCharacter(@Body() Character newCharacter) async {
     await Future.delayed(const Duration(seconds: 2));
     fakeCharacters.add(newCharacter);
-    print('all $fakeCharacters');
   }
 }

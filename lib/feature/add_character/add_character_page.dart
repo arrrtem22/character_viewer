@@ -55,7 +55,7 @@ class _AddCharacterViewState extends State<_AddCharacterView> {
       },
       builder: (context, state) {
         return Scaffold(
-          body: BuildUI(
+          body: _BuildUI(
             titleController: titleController,
             imageUrlController: imageUrlController,
             descriptionController: descriptionController,
@@ -75,13 +75,13 @@ class _AddCharacterViewState extends State<_AddCharacterView> {
   }
 }
 
-class BuildUI extends StatelessWidget {
+class _BuildUI extends StatelessWidget {
   final TextEditingController titleController;
   final TextEditingController imageUrlController;
   final TextEditingController descriptionController;
   final VoidCallback onPressed;
 
-  const BuildUI({
+  const _BuildUI({
     Key? key,
     required this.titleController,
     required this.imageUrlController,
@@ -96,33 +96,33 @@ class BuildUI extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          NeumorphicTextFieldWidget(
+          _NeumorphicTextFieldWidget(
             controller: titleController,
             labelText: 'Character',
           ),
           const SizedBox(height: 20),
-          NeumorphicTextFieldWidget(
+          _NeumorphicTextFieldWidget(
             controller: imageUrlController,
             labelText: 'Image URL',
           ),
           const SizedBox(height: 20),
-          NeumorphicTextFieldWidget(
+          _NeumorphicTextFieldWidget(
             controller: descriptionController,
             labelText: 'Description',
           ),
           const SizedBox(height: 20),
-          AddCharacterButtonWidget(onPressed: onPressed),
+          _AddCharacterButtonWidget(onPressed: onPressed),
         ],
       ),
     );
   }
 }
 
-class NeumorphicTextFieldWidget extends StatelessWidget {
+class _NeumorphicTextFieldWidget extends StatelessWidget {
   final TextEditingController controller;
   final String labelText;
 
-  const NeumorphicTextFieldWidget({
+  const _NeumorphicTextFieldWidget({
     Key? key,
     required this.controller,
     required this.labelText,
@@ -161,24 +161,18 @@ class NeumorphicTextFieldWidget extends StatelessWidget {
   }
 }
 
-class AddCharacterButtonWidget extends StatefulWidget {
+class _AddCharacterButtonWidget extends StatelessWidget {
   final VoidCallback onPressed;
 
-  const AddCharacterButtonWidget({
+  const _AddCharacterButtonWidget({
     Key? key,
     required this.onPressed,
   }) : super(key: key);
 
   @override
-  State<AddCharacterButtonWidget> createState() =>
-      _AddCharacterButtonWidgetState();
-}
-
-class _AddCharacterButtonWidgetState extends State<AddCharacterButtonWidget> {
-  @override
   Widget build(BuildContext context) {
     return ElevatedButton(
-      onPressed: widget.onPressed,
+      onPressed: onPressed,
       style: ElevatedButton.styleFrom(
         primary: Colors.grey[200],
         onPrimary: Colors.grey[800],

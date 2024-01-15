@@ -72,7 +72,7 @@ class _LargeHomeView extends StatelessWidget {
                     : const Center(child: Text('Select character'))),
             FloatingActionButton(
               onPressed: () {
-                GoRouter.of(context).go('/addCharacter');
+                AddCharacterRoute().go(context);
               },
               child: const Icon(Icons.add),
             ),
