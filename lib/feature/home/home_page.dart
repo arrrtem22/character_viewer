@@ -3,6 +3,7 @@ import 'package:character_viewer/common/common.dart';
 import 'package:character_viewer/feature/detail/detail.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 
 import 'cubit/home_cubit.dart';
 
@@ -69,6 +70,12 @@ class _LargeHomeView extends StatelessWidget {
                 child: state.selected != null
                     ? DetailView(character: state.selected!)
                     : const Center(child: Text('Select character'))),
+            FloatingActionButton(
+              onPressed: () {
+                AddCharacterRoute().go(context);
+              },
+              child: const Icon(Icons.add),
+            ),
           ],
         );
       },
@@ -77,32 +84,44 @@ class _LargeHomeView extends StatelessWidget {
 }
 
 class _SmallHomeView extends StatelessWidget {
-  const _SmallHomeView({super.key});
+  const _SmallHomeView({Key? key});
 
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<HomeCubit, HomeState>(
       builder: (context, HomeState state) {
-        return Column(
+        return Stack(
           children: [
-            TextField(onChanged: context.read<HomeCubit>().search),
-            state.maybeMap(
-              general: (state) => Expanded(
-                child: ListView(
-                  shrinkWrap: true,
-                  children: state.characters
-                      .map((character) => _CharacterItem(
-                            character: character,
-                            onTap: () =>
-                                DetailRoute($extra: character).go(context),
-                          ))
-                      .toList(),
+            Column(
+              children: [
+                TextField(onChanged: context.read<HomeCubit>().search),
+                state.maybeMap(
+                  general: (state) => Expanded(
+                    child: ListView(
+                      shrinkWrap: true,
+                      children: state.characters
+                          .map((character) => _CharacterItem(
+                                character: character,
+                                onTap: () =>
+                                    DetailRoute($extra: character).go(context),
+                              ))
+                          .toList(),
+                    ),
+                  ),
+                  orElse: () => const Center(
+                    child: CircularProgressIndicator(),
+                  ),
                 ),
+              ],
+            ),
+            Positioned(
+              bottom: 16.0,
+              right: 16.0,
+              child: FloatingActionButton(
+                onPressed: () => AddCharacterRoute().go(context),
+                child: const Icon(Icons.add),
               ),
-              orElse: () => const Center(
-                child: CircularProgressIndicator(),
-              ),
-            )
+            ),
           ],
         );
       },
