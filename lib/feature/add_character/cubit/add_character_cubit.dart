@@ -1,7 +1,4 @@
-// add_character_cubit.dart
-
-import 'package:character_viewer/common/network/dto/character.dart';
-import 'package:character_viewer/common/service/character_service.dart';
+import 'package:character_viewer/common/common.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:injectable/injectable.dart';
