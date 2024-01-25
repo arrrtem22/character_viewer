@@ -14,7 +14,7 @@ enum FakeApi {
 class FakeApiManager {
   static final _enabledFakeApi = <FakeApi>{
     // Place here fake api that should be enabled by default
-    //if (kDebugMode) FakeApi.characters,
+    if (kDebugMode) FakeApi.characters,
   };
 
   static bool isFakeApiEnabled(FakeApi api) => _enabledFakeApi.contains(api);
