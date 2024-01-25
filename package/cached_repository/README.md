@@ -54,9 +54,3 @@ repository.getAccountStream(msisdn).listen((res) {
 
 repository.invalidate(msisdn); // reload
 ```
-
-### Authors
-
-- [drstranges](https://github.com/drstranges)
-- [NaikSoftware](https://github.com/NaikSoftware)
-- [MagTuxGit](https://github.com/MagTuxGit)

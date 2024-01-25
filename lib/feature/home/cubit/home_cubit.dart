@@ -1,6 +1,8 @@
 import 'dart:async';
 
+import 'package:cached_repository/cached_repository.dart';
 import 'package:character_viewer/common/common.dart';
+import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:injectable/injectable.dart';
@@ -12,12 +14,12 @@ part 'home_state.dart';
 @injectable
 class HomeCubit extends Cubit<HomeState> {
   HomeCubit({required this.charactersService})
-      : super(const HomeState.general());
+      : super(const HomeState.loading());
 
   final CharactersService charactersService;
 
   final _searchSubject = BehaviorSubject<String>.seeded('');
-  StreamSubscription<String>? _subscription;
+  StreamSubscription<FilteredResult>? _subscription;
 
   @override
   Future<void> close() {
@@ -28,17 +30,54 @@ class HomeCubit extends Cubit<HomeState> {
   }
 
   Future<void> init() async {
-    final characters = (await charactersService.getCharacters()).characters;
-    _subscription = _searchSubject.listen((text) {
-      if (text.isEmpty) return;
-      final filteredCharacters = characters
-          .where((character) =>
-              character.title.toLowerCase().contains(text) ||
-              character.description.toLowerCase().contains(text))
-          .toList();
-      emit(state.copyWith(characters: filteredCharacters));
+    _subscription = Rx.combineLatest2(
+      charactersService.getCharactersStream(),
+      _searchSubject.distinct(),
+      filter,
+    ).listen((result) {
+      if (result.charactersResource.data != null) {
+        emit(HomeState.success(
+          characters: result.charactersResource.data!.characters,
+        ));
+      } else if (result.charactersResource.error
+          is NetworkConnectionException) {
+        emit(const HomeState.failure(
+          type: FailureType.networkConnection,
+        ));
+      } else if (result.charactersResource.isError) {
+        emit(const HomeState.failure(type: FailureType.unknown));
+      }
     });
-    emit(HomeState.general(characters: characters));
+  }
+
+  @visibleForTesting
+  FilteredResult filter(
+    Resource<Characters> charactersResource,
+    String searchQuery,
+  ) {
+    return FilteredResult(
+      charactersResource: charactersResource.map(
+        (data) => filterByQuery(data, searchQuery),
+      ),
+      query: searchQuery,
+    );
+  }
+
+  @visibleForTesting
+  Characters? filterByQuery(
+    Characters? source,
+    String query,
+  ) {
+    if (source == null) return null;
+    if (query.isEmpty) {
+      return source;
+    }
+    return source.copyWith(
+        characters: source.characters
+            .where((character) =>
+                character.title.toLowerCase().contains(query) ||
+                character.description.toLowerCase().contains(query))
+            .toList());
   }
 
   void search([String text = '']) {
@@ -48,4 +87,20 @@ class HomeCubit extends Cubit<HomeState> {
   void selectCharacter([Character? character]) {
     emit(state.copyWith(selected: character));
   }
+
+  Future<void> refresh() => charactersService.invalidate();
+}
+
+@visibleForTesting
+class FilteredResult extends Equatable {
+  const FilteredResult({
+    required this.charactersResource,
+    required this.query,
+  });
+
+  final Resource<Characters> charactersResource;
+  final String query;
+
+  @override
+  List<Object> get props => [charactersResource, query];
 }

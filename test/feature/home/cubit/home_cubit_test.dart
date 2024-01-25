@@ -1,4 +1,5 @@
 import 'package:bloc_test/bloc_test.dart';
+import 'package:cached_repository/cached_repository.dart';
 import 'package:character_viewer/common/common.dart';
 import 'package:character_viewer/feature/home/cubit/home_cubit.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -21,8 +22,9 @@ void main() {
     });
 
     test('initial state is correct', () {
-      expect(cubit.state, const HomeState.general());
+      expect(cubit.state, const HomeState.loading());
     });
+
     const characters = Characters(characters: [
       Character(
           title: 'Character 1', description: 'Description 1', imageUrl: ''),
@@ -32,16 +34,16 @@ void main() {
 
     group('init()', () {
       blocTest<HomeCubit, HomeState>(
-        'emits general state with characters when initialization is successful',
+        'emits success state with characters when initialization is successful',
         build: () {
-          when(charactersService.getCharacters()).thenAnswer((_) async {
-            return characters;
+          when(charactersService.getCharactersStream()).thenAnswer((_) {
+            return Stream.value(Resource.success(characters));
           });
           return cubit;
         },
         act: (cubit) => cubit.init(),
         expect: () => [
-          HomeState.general(characters: characters.characters),
+          HomeState.success(characters: characters.characters),
         ],
       );
     });
@@ -53,8 +55,8 @@ void main() {
         blocTest<HomeCubit, HomeState>(
           'emits filtered characters when search is performed',
           build: () {
-            when(charactersService.getCharacters()).thenAnswer((_) async {
-              return characters;
+            when(charactersService.getCharactersStream()).thenAnswer((_) {
+              return Stream.value(Resource.success(characters));
             });
             return cubit;
           },
@@ -63,8 +65,8 @@ void main() {
             cubit.search(searchText);
           },
           expect: () => [
-            HomeState.general(characters: characters.characters),
-            const HomeState.general(characters: [
+            HomeState.success(characters: characters.characters),
+            const HomeState.success(characters: [
               Character(
                 title: 'Character 1',
                 description: 'Description 1',
@@ -74,14 +76,15 @@ void main() {
           ],
         );
       });
+
       group('search by description', () {
         const searchText = 'description 2';
 
         blocTest<HomeCubit, HomeState>(
           'emits filtered characters when search is performed',
           build: () {
-            when(charactersService.getCharacters()).thenAnswer((_) async {
-              return characters;
+            when(charactersService.getCharactersStream()).thenAnswer((_) {
+              return Stream.value(Resource.success(characters));
             });
             return cubit;
           },
@@ -90,8 +93,8 @@ void main() {
             cubit.search(searchText);
           },
           expect: () => [
-            HomeState.general(characters: characters.characters),
-            const HomeState.general(characters: [
+            HomeState.success(characters: characters.characters),
+            const HomeState.success(characters: [
               Character(
                 title: 'Character 2',
                 description: 'Description 2',
@@ -112,10 +115,10 @@ void main() {
 
       blocTest<HomeCubit, HomeState>(
         'emits state with selected character',
-        build: () => cubit,
+        build: () => cubit..emit(const HomeState.success()),
         act: (cubit) => cubit.selectCharacter(selectedCharacter),
         expect: () => [
-          const HomeState.general(selected: selectedCharacter),
+          const HomeState.success(selected: selectedCharacter),
         ],
       );
     });

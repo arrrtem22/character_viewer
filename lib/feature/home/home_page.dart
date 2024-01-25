@@ -3,7 +3,6 @@ import 'package:character_viewer/common/common.dart';
 import 'package:character_viewer/feature/detail/detail.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:go_router/go_router.dart';
 
 import 'cubit/home_cubit.dart';
 
@@ -31,7 +30,7 @@ class HomePage extends StatelessWidget {
 }
 
 class _LargeHomeView extends StatelessWidget {
-  const _LargeHomeView({Key? key}) : super(key: key);
+  const _LargeHomeView();
 
   @override
   Widget build(BuildContext context) {
@@ -45,18 +44,26 @@ class _LargeHomeView extends StatelessWidget {
                 children: [
                   TextField(onChanged: context.read<HomeCubit>().search),
                   state.maybeMap(
-                    general: (state) => Expanded(
-                      child: ListView(
-                        shrinkWrap: true,
-                        children: state.characters
-                            .map((character) => _CharacterItem(
-                                  character: character,
-                                  onTap: () => context
-                                      .read<HomeCubit>()
-                                      .selectCharacter(character),
-                                ))
-                            .toList(),
+                    success: (state) => Expanded(
+                      child: RefreshIndicator(
+                        onRefresh: context.read<HomeCubit>().refresh,
+                        child: ListView(
+                          shrinkWrap: true,
+                          children: state.characters
+                              .map((character) => _CharacterItem(
+                                    character: character,
+                                    onTap: () => context
+                                        .read<HomeCubit>()
+                                        .selectCharacter(character),
+                                  ))
+                              .toList(),
+                        ),
                       ),
+                    ),
+                    failure: (state) => Center(
+                      child: Text(state.type == FailureType.networkConnection
+                          ? 'Network error'
+                          : 'Unexpected error'),
                     ),
                     orElse: () => const Center(
                       child: CircularProgressIndicator(),
@@ -84,7 +91,7 @@ class _LargeHomeView extends StatelessWidget {
 }
 
 class _SmallHomeView extends StatelessWidget {
-  const _SmallHomeView({Key? key});
+  const _SmallHomeView();
 
   @override
   Widget build(BuildContext context) {
@@ -96,17 +103,25 @@ class _SmallHomeView extends StatelessWidget {
               children: [
                 TextField(onChanged: context.read<HomeCubit>().search),
                 state.maybeMap(
-                  general: (state) => Expanded(
-                    child: ListView(
-                      shrinkWrap: true,
-                      children: state.characters
-                          .map((character) => _CharacterItem(
-                                character: character,
-                                onTap: () =>
-                                    DetailRoute($extra: character).go(context),
-                              ))
-                          .toList(),
+                  success: (state) => Expanded(
+                    child: RefreshIndicator(
+                      onRefresh: context.read<HomeCubit>().refresh,
+                      child: ListView(
+                        shrinkWrap: true,
+                        children: state.characters
+                            .map((character) => _CharacterItem(
+                                  character: character,
+                                  onTap: () => DetailRoute($extra: character)
+                                      .go(context),
+                                ))
+                            .toList(),
+                      ),
                     ),
+                  ),
+                  failure: (state) => Center(
+                    child: Text(state.type == FailureType.networkConnection
+                        ? 'Network error'
+                        : 'Unexpected error'),
                   ),
                   orElse: () => const Center(
                     child: CircularProgressIndicator(),
