@@ -6,15 +6,23 @@ import 'package:injectable/injectable.dart';
 class CharactersService {
   CharactersService({
     required CharactersRepository charactersRepository,
-  }) : _charactersRepository = charactersRepository;
+    required CharactersApi charactersApi,
+  })  : _charactersRepository = charactersRepository,
+        _charactersApi = charactersApi;
 
   final CharactersRepository _charactersRepository;
+  final CharactersApi _charactersApi;
 
   Future<Resource<Characters>> getCharacters() =>
       _charactersRepository.getCharacters();
 
   Stream<Resource<Characters>> getCharactersStream() =>
       _charactersRepository.getCharactersStream();
+
+  Future<void> addCharacter(Character newCharacter) async {
+    await _charactersApi.addCharacter(newCharacter);
+    invalidate();
+  }
 
   Future<void> invalidate() => _charactersRepository.invalidate();
 }

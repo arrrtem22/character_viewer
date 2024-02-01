@@ -8,7 +8,7 @@ import 'package:retrofit/retrofit.dart';
 part 'characters_api.g.dart';
 
 @RestApi()
-@injectable
+@singleton
 abstract class CharactersApi {
   @factoryMethod
   factory CharactersApi(Dio dio) =>
@@ -46,8 +46,8 @@ class _FakeCharactersApi implements CharactersApi {
   }
 
   @override
-  Future<void> addCharacter(@Body() Character newCharacter) async {
+  Future<void> addCharacter(Character newCharacter) async {
     await Future.delayed(const Duration(seconds: 2));
-    fakeCharacters.add(newCharacter);
+    fakeCharacters = fakeCharacters..toList()..add(newCharacter);
   }
 }

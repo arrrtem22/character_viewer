@@ -1,5 +1,4 @@
 import 'package:character_viewer/common/common.dart';
-import 'package:character_viewer/feature/add_character/add_character_page.dart';
 import 'package:character_viewer/feature/feature.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
